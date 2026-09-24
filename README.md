@@ -10,6 +10,9 @@ in millimetres.
 > **Status:** v0.1 has been validated only on synthetic tablets. It has not yet been
 > run on the Sulaymaniyah scans, and scores and thresholds will need recalibrating on
 > them.
+>
+> Full project report (data, method, development log, validation, next steps):
+> [docs/REPORT.md](docs/REPORT.md). Change log: [CHANGELOG.md](CHANGELOG.md).
 
 ## Why this is feasible with the Sulaymaniyah scans
 
