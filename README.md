@@ -57,7 +57,7 @@ in millimetres.
 ## Install and use
 
 ```bash
-pip install -e .            # numpy, scipy, plyfile, pillow
+pip install -e .            # Python 3.8+; numpy, scipy, plyfile, pillow
 
 mesoprint info SM_039043_GMOCF.ply          # size, resolution, samples per ridge
 mesoprint detect SM_039043_GMOCF.ply -o out/ --heatmap-ply
@@ -71,6 +71,11 @@ mesoprint synth test.ply                    # synthetic tablet + ground truth JS
 - `patches.csv`: every patch's features, for analysis and training.
 - `<name>_score.ply` (optional): the mesh coloured by score, with a `quality`
   property readable in GigaMesh and MeshLab.
+
+To share results for calibration, write them inside the repo, e.g.
+`-o results/SM_036475`, and commit that folder. It is small; the optional heat-map
+PLY is git-ignored, like all `*.ply` files except cropped test regions under
+`samples/`.
 
 Coordinates are taken to be millimetres; use `--scale` otherwise. The overview
 assumes GigaMesh orientation (obverse facing +Z, X right, Y up).

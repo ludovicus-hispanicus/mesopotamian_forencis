@@ -60,7 +60,7 @@ def cmd_detect(args) -> None:
             w.writerow({k: (round(v, 5) if isinstance(v, float) else v) for k, v in r.items()})
 
     cands = det.candidates[: args.top]
-    summary = {"mesh": mesh.summary(), "params": vars(params) | {"band": list(params.band)},
+    summary = {"mesh": mesh.summary(), "params": {**vars(params), "band": list(params.band)},
                "grid_spacing_mm": det.spacing, "candidates": []}
     tree = cKDTree(mesh.vertices)
     for i, c in enumerate(cands, 1):

@@ -30,8 +30,14 @@ class Mesh:
     def scaled(self, factor: float) -> "Mesh":
         return Mesh(self.vertices * factor, self.faces, self.extra, self.name)
 
-    def vertex_normals(self) -> np.ndarray:
-        """Area-weighted vertex normals (unit length)."""
+    def vertex_normals(self, orient_outward: bool = True) -> np.ndarray:
+        """Area-weighted vertex normals (unit length).
+
+        With ``orient_outward`` the normals are flipped if the triangles are wound
+        inwards (negative signed volume), so that "up" in every relief map means
+        out of the clay. This matters: it decides whether a groove is read as a
+        groove.
+        """
         if self.faces is None or len(self.faces) == 0:
             raise ValueError("mesh has no faces; normals cannot be computed")
         v, f = self.vertices, self.faces
@@ -41,7 +47,18 @@ class Mesh:
             n[:, k] = sum(np.bincount(f[:, j], weights=fn[:, k], minlength=len(v)) for j in range(3))
         norm = np.linalg.norm(n, axis=1, keepdims=True)
         norm[norm == 0] = 1.0
-        return n / norm
+        n = n / norm
+        if orient_outward and self.signed_volume() < 0:
+            n = -n
+        return n
+
+    def signed_volume(self) -> float:
+        """Volume enclosed by the mesh, positive if faces are wound outwards. Exact
+        for closed meshes; for an open surface it still indicates which side the
+        normals face relative to the vertex centroid."""
+        v = self.vertices - self.vertices.mean(axis=0)
+        f = self.faces
+        return float(np.einsum("ij,ij->i", v[f[:, 0]], np.cross(v[f[:, 1]], v[f[:, 2]])).sum() / 6.0)
 
     def median_edge_length(self, sample: int = 200_000, seed: int = 0) -> float:
         """Median edge length, i.e. the scan's effective lateral resolution."""
@@ -84,7 +101,12 @@ def load_ply(path: str | Path) -> Mesh:
     face_list = _face_list_property(path)
     if face_list is not None:
         known = {"face": {face_list: 3}}
-    data = PlyData.read(str(path), known_list_len=known) if known else PlyData.read(str(path))
+    try:
+        data = PlyData.read(str(path), known_list_len=known) if known else PlyData.read(str(path))
+    except Exception:
+        if not known:
+            raise
+        data = PlyData.read(str(path))  # e.g. some faces are not triangles
 
     vert = data["vertex"].data
     vertices = np.column_stack([vert["x"], vert["y"], vert["z"]]).astype(np.float64)

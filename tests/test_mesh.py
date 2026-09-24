@@ -1,6 +1,7 @@
 import numpy as np
 
-from mesoprint.mesh import grid_mesh, load_ply, save_ply
+from mesoprint.mesh import Mesh, grid_mesh, load_ply, save_ply
+from mesoprint.synth import make_tablet
 
 
 def test_grid_mesh_roundtrip(tmp_path):
@@ -20,3 +21,12 @@ def test_flat_normals_and_spacing():
     n = mesh.vertex_normals()
     np.testing.assert_allclose(n, np.tile([0, 0, 1.0], (100, 1)), atol=1e-9)
     assert abs(mesh.median_edge_length() - 0.04) < 1e-9
+
+
+def test_normals_point_out_of_clay_even_if_winding_is_inverted():
+    mesh, _ = make_tablet(spacing=0.1)
+    flipped = Mesh(mesh.vertices, mesh.faces[:, ::-1].copy())
+    for m in (mesh, flipped):
+        n = m.vertex_normals()
+        centre = np.argmin(np.linalg.norm(m.vertices[:, :2], axis=1))
+        assert n[centre, 2] > 0.9

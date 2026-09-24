@@ -5,3 +5,5 @@ __pycache__/
 # scans and results are large; keep them out of git
 *.ply
 *_fingerprints/
+# ...except small cropped test regions
+!samples/**/*.ply

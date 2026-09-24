@@ -68,12 +68,20 @@ def render_view(V, N, scalar, view, px_mm=0.1, lo=0.05, hi=0.35, bounds=None):
     img = np.full((h * w, 3), 255, np.uint8)
     img[p] = rgb.astype(np.uint8)
     img = img.reshape(h, w, 3)
-    # fill single-pixel gaps left by splatting
-    hole = np.all(img == 255, axis=2)
+    return _fill_gaps(img, np.isin(np.arange(h * w), p).reshape(h, w))
+
+
+def _fill_gaps(img: np.ndarray, drawn: np.ndarray, max_gap_px: int = 4) -> np.ndarray:
+    """Fill splatting gaps inside the object outline with the nearest drawn pixel."""
     from scipy import ndimage
-    for c in range(3):
-        mx = ndimage.minimum_filter(img[..., c], 3)
-        img[..., c] = np.where(hole & (mx < 255), ndimage.median_filter(img[..., c], 3), img[..., c])
+
+    outline = ndimage.binary_closing(drawn, iterations=max_gap_px, border_value=0)
+    holes = outline & ~drawn
+    if not holes.any():
+        return img
+    _, (iy, ix) = ndimage.distance_transform_edt(~drawn, return_indices=True)
+    img[holes] = img[iy[holes], ix[holes]]
+    return img
     return img
 
 

@@ -7,7 +7,7 @@ name = "mesoprint"
 version = "0.1.0"
 description = "Detect and extract fingerprint impressions on 3D scans of cuneiform tablets and other clay objects"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.8"
 dependencies = ["numpy>=1.22", "scipy>=1.9", "plyfile>=0.8", "pillow>=9"]
 
 [project.optional-dependencies]
