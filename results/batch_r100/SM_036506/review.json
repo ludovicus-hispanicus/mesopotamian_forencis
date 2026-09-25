@@ -1,0 +1,182 @@
+{
+  "candidates": {
+    "1": {
+      "verdict": "unsure",
+      "reason": "",
+      "note": "",
+      "reviewer": "Luis",
+      "time": "2026-09-25 15:00",
+      "centre": [
+        8.948,
+        11.072,
+        10.919
+      ],
+      "params": {
+        "radius_mm": 4.0,
+        "mask_level": 0.4
+      },
+      "measurements": {
+        "mean_ridge_breadth_mm": 0.469,
+        "ridge_count_per_5mm": 10.7,
+        "ridge_amplitude_um_rms": 5.7,
+        "straightness": 0.71,
+        "area_mm2": 50.2,
+        "isolated": false
+      },
+      "manual": null,
+      "strokes": [],
+      "skeleton": {
+        "ridge_length_mm": 0.0,
+        "guided": false,
+        "n_strokes": 0,
+        "n_minutiae": 0,
+        "file": "cand01_skeleton.json",
+        "ridge_breadth_mm": null,
+        "ridge_breadth_q1_q3": [
+          null,
+          null
+        ]
+      },
+      "files": [
+        "cand01_mask.png",
+        "cand01_print.png",
+        "cand01_msii.png",
+        "cand01_maskonly.png"
+      ]
+    },
+    "2": {
+      "verdict": "unsure",
+      "reason": "",
+      "note": "",
+      "reviewer": "Luis",
+      "time": "2026-09-25 15:01",
+      "centre": [
+        5.001,
+        0.71,
+        0.954
+      ],
+      "params": {
+        "radius_mm": 4.0,
+        "mask_level": 0.4
+      },
+      "measurements": {
+        "mean_ridge_breadth_mm": 0.547,
+        "ridge_count_per_5mm": 9.1,
+        "ridge_amplitude_um_rms": 8.1,
+        "straightness": 0.99,
+        "area_mm2": 20.7,
+        "isolated": true
+      },
+      "manual": null,
+      "strokes": [],
+      "skeleton": {
+        "ridge_length_mm": 28.3,
+        "guided": false,
+        "n_strokes": 0,
+        "n_minutiae": 1,
+        "file": "cand02_skeleton.json",
+        "ridge_breadth_mm": 0.586,
+        "ridge_breadth_q1_q3": [
+          0.555,
+          0.651
+        ]
+      },
+      "files": [
+        "cand02_mask.png",
+        "cand02_print.png",
+        "cand02_msii.png",
+        "cand02_maskonly.png"
+      ]
+    },
+    "3": {
+      "verdict": "unsure",
+      "reason": "",
+      "note": "",
+      "reviewer": "Luis",
+      "time": "2026-09-25 15:02",
+      "centre": [
+        20.482,
+        15.187,
+        8.216
+      ],
+      "params": {
+        "radius_mm": 4.0,
+        "mask_level": 0.4
+      },
+      "measurements": {
+        "mean_ridge_breadth_mm": 0.594,
+        "ridge_count_per_5mm": 8.4,
+        "ridge_amplitude_um_rms": 3.4,
+        "straightness": 0.99,
+        "area_mm2": 6.2,
+        "isolated": true
+      },
+      "manual": null,
+      "strokes": [],
+      "skeleton": {
+        "ridge_length_mm": 10.1,
+        "guided": false,
+        "n_strokes": 0,
+        "n_minutiae": 1,
+        "file": "cand03_skeleton.json",
+        "ridge_breadth_mm": 0.514,
+        "ridge_breadth_q1_q3": [
+          0.449,
+          0.592
+        ]
+      },
+      "files": [
+        "cand03_mask.png",
+        "cand03_print.png",
+        "cand03_msii.png",
+        "cand03_maskonly.png"
+      ]
+    },
+    "4": {
+      "verdict": "unsure",
+      "reason": "",
+      "note": "",
+      "reviewer": "Luis",
+      "time": "2026-09-25 15:02",
+      "centre": [
+        -17.016,
+        1.382,
+        -0.996
+      ],
+      "params": {
+        "radius_mm": 4.0,
+        "mask_level": 0.4
+      },
+      "measurements": {
+        "mean_ridge_breadth_mm": 0.546,
+        "ridge_count_per_5mm": 9.2,
+        "ridge_amplitude_um_rms": 5.7,
+        "straightness": 0.8,
+        "area_mm2": 8.9,
+        "isolated": true
+      },
+      "manual": null,
+      "strokes": [],
+      "skeleton": {
+        "ridge_length_mm": 13.8,
+        "guided": false,
+        "n_strokes": 0,
+        "n_minutiae": 1,
+        "file": "cand04_skeleton.json",
+        "ridge_breadth_mm": 0.534,
+        "ridge_breadth_q1_q3": [
+          0.483,
+          0.584
+        ]
+      },
+      "files": [
+        "cand04_mask.png",
+        "cand04_print.png",
+        "cand04_msii.png",
+        "cand04_maskonly.png"
+      ]
+    }
+  },
+  "added": [],
+  "moved": {}
+}

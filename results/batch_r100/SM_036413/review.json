@@ -1,0 +1,94 @@
+{
+  "candidates": {
+    "2": {
+      "verdict": "unsure",
+      "reason": "",
+      "note": "",
+      "reviewer": "Luis",
+      "time": "2026-09-25 14:57",
+      "centre": [
+        7.984,
+        51.926,
+        -7.998
+      ],
+      "params": {
+        "radius_mm": 8.0,
+        "mask_level": 0.4
+      },
+      "measurements": {
+        "mean_ridge_breadth_mm": 0.582,
+        "ridge_count_per_5mm": 8.6,
+        "ridge_amplitude_um_rms": 6.6,
+        "straightness": 0.72,
+        "area_mm2": 14.9,
+        "isolated": true
+      },
+      "manual": null,
+      "strokes": [],
+      "skeleton": {
+        "ridge_length_mm": 25.2,
+        "guided": false,
+        "n_strokes": 0,
+        "n_minutiae": 0,
+        "file": "cand02_skeleton.json",
+        "ridge_breadth_mm": 0.568,
+        "ridge_breadth_q1_q3": [
+          0.508,
+          0.591
+        ]
+      },
+      "files": [
+        "cand02_mask.png",
+        "cand02_print.png",
+        "cand02_msii.png",
+        "cand02_maskonly.png"
+      ]
+    },
+    "1": {
+      "verdict": "no",
+      "reason": "clay texture",
+      "note": "",
+      "reviewer": "Luis",
+      "time": "2026-09-25 14:57",
+      "centre": [
+        -7.016,
+        51.082,
+        -10.477
+      ],
+      "params": {
+        "radius_mm": 8.0,
+        "mask_level": 0.4
+      },
+      "measurements": {
+        "mean_ridge_breadth_mm": 0.597,
+        "ridge_count_per_5mm": 8.4,
+        "ridge_amplitude_um_rms": 5.0,
+        "straightness": 0.29,
+        "area_mm2": 37.2,
+        "isolated": true
+      },
+      "manual": null,
+      "strokes": [],
+      "skeleton": {
+        "ridge_length_mm": 58.4,
+        "guided": false,
+        "n_strokes": 0,
+        "n_minutiae": 4,
+        "file": "cand01_skeleton.json",
+        "ridge_breadth_mm": 0.534,
+        "ridge_breadth_q1_q3": [
+          0.45,
+          0.591
+        ]
+      },
+      "files": [
+        "cand01_mask.png",
+        "cand01_print.png",
+        "cand01_msii.png",
+        "cand01_maskonly.png"
+      ]
+    }
+  },
+  "added": [],
+  "moved": {}
+}

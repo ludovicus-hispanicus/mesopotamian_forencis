@@ -186,6 +186,22 @@ def ridge_score(f: RidgeFeatures, noise_um: float = 2.0, straight_lo: float = 0.
     labelled tablets.
     """
     amp = f.band_amp_um / (f.band_amp_um + noise_um)
-    s = np.clip((f.straightness - straight_lo) / (1.0 - straight_lo), 0.0, 1.0)
-    penalty = 1.0 - straight_weight * s
+    penalty = straightness_penalty(f.straightness, straight_lo, straight_weight)
     return float(np.clip(f.band_ratio * f.local_coherence * f.coverage * amp * penalty, 0.0, 1.0))
+
+
+def straightness_penalty(straightness: float, straight_lo: float = 0.75, straight_weight: float = 0.8) -> float:
+    """1 for curved ridges, falling to ``1 - straight_weight`` for perfectly parallel ones."""
+    s = np.clip((straightness - straight_lo) / (1.0 - straight_lo), 0.0, 1.0)
+    return float(1.0 - straight_weight * s)
+
+
+def fingerprint_score(periodic_cover: float, straightness: float) -> float:
+    """Detection score in [0, 1]: the share of the patch covered by clearly
+    periodic ridges (see :mod:`mesoprint.periodicity`), down-weighted when all
+    ridges are parallel, the signature of structured-light scanner stripes.
+
+    Calibrated on one real print (SM 036475): the print's patches reach 0.65,
+    the rest of that tablet stays below 0.31 (99% below 0.10).
+    """
+    return float(np.clip(periodic_cover * straightness_penalty(straightness), 0.0, 1.0))

@@ -101,6 +101,9 @@ def load_ply(path: str | Path) -> Mesh:
     face_list = _face_list_property(path)
     if face_list is not None:
         known = {"face": {face_list: 3}}
+    vertex_lists = _vertex_list_lengths(path)  # e.g. GigaMesh MSII feature vectors
+    if vertex_lists:
+        known["vertex"] = vertex_lists
     try:
         data = PlyData.read(str(path), known_list_len=known) if known else PlyData.read(str(path))
     except Exception:
@@ -144,6 +147,44 @@ def _face_list_property(path: Path) -> str | None:
             elif line == "end_header":
                 break
     return None
+
+
+_PLY_TYPES = {"char": "i1", "int8": "i1", "uchar": "u1", "uint8": "u1", "short": "i2", "int16": "i2",
+              "ushort": "u2", "uint16": "u2", "int": "i4", "int32": "i4", "uint": "u4", "uint32": "u4",
+              "float": "f4", "float32": "f4", "double": "f8", "float64": "f8"}
+
+
+def _vertex_list_lengths(path: Path) -> dict[str, int]:
+    """Lengths of list properties on vertices (such as GigaMesh's MSII
+    ``feature_vector``), read from the first vertex of a binary PLY, so that
+    plyfile can use its fast fixed-length reader. Empty if there are none."""
+    props, elements, endian = [], [], None
+    with open(path, "rb") as fh:
+        for raw in fh:
+            line = raw.decode("ascii", "replace").strip()
+            parts = line.split()
+            if line.startswith("format"):
+                endian = {"binary_little_endian": "<", "binary_big_endian": ">"}.get(parts[1])
+            elif line.startswith("element"):
+                elements.append(parts[1])
+            elif line.startswith("property") and elements[-1:] == ["vertex"]:
+                props.append(parts[1:])
+            elif line == "end_header":
+                break
+        # the first record after the header is the first vertex only if vertices come first
+        if endian is None or elements[:1] != ["vertex"] or not any(p[0] == "list" for p in props):
+            return {}
+        out, offset = {}, 0
+        first = fh.read(4096)
+    for p in props:
+        if p[0] == "list":
+            count_t, item_t, name = _PLY_TYPES[p[1]], _PLY_TYPES[p[2]], p[3]
+            count = int(np.frombuffer(first, endian + count_t, 1, offset)[0])
+            out[name] = count
+            offset += np.dtype(count_t).itemsize + count * np.dtype(item_t).itemsize
+        else:
+            offset += np.dtype(_PLY_TYPES[p[0]]).itemsize
+    return out
 
 
 def save_ply(path: str | Path, mesh: Mesh, scalars: dict[str, np.ndarray] | None = None,

@@ -1,0 +1,705 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>mesoprint review</title>
+<style>
+  :root { --bg:#f3f4f6; --panel:#fff; --line:#d9dbe0; --ink:#15171a; --mute:#6b7280; --acc:#1d6fd6; --ok:#1a9c4b; --no:#d23a3a; --unsure:#d69b1d; --pending:#8a8f98; }
+  * { box-sizing:border-box }
+  body { margin:0; font:13px/1.4 system-ui, sans-serif; color:var(--ink); background:var(--bg); display:flex; height:100vh; overflow:hidden }
+  aside { width:350px; min-width:350px; overflow-y:auto; background:var(--panel); border-right:1px solid var(--line); padding:10px 14px 30px }
+  main { flex:1; display:flex; min-width:0 }
+  #ovwrap { width:32%; min-width:240px; border-right:1px solid var(--line); background:#e6e8ec; position:relative }
+  #edwrap { flex:1; position:relative; background:#26282c }
+  canvas { display:block }
+  #ov { cursor:crosshair }
+  #edinfo { position:absolute; left:10px; top:8px; color:#eee; font-size:12px; text-shadow:0 0 3px #000; pointer-events:none }
+  #ovinfo { position:absolute; left:8px; bottom:6px; color:#333; font-size:11px; pointer-events:none }
+  h1 { font-size:15px; margin:4px 0 10px }
+  h2 { font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--mute); margin:16px 0 6px; border-top:1px solid var(--line); padding-top:10px }
+  label { display:flex; align-items:center; gap:6px; margin:4px 0 }
+  label span.k { width:88px; color:var(--mute); flex:none }
+  input[type=range] { flex:1 }
+  input[type=text], select, textarea { font:inherit; padding:3px 5px; border:1px solid var(--line); border-radius:4px; background:#fff }
+  textarea { width:100%; height:48px; resize:vertical }
+  button { font:inherit; padding:5px 9px; border:1px solid var(--line); border-radius:5px; background:#fafafa; cursor:pointer }
+  button:hover { background:#eef1f5 }
+  button.on { background:var(--acc); color:#fff; border-color:var(--acc) }
+  .row { display:flex; gap:6px; flex-wrap:wrap; margin:4px 0 }
+  .row button { flex:1 }
+  #cands { list-style:none; margin:0; padding:0; max-height:220px; overflow-y:auto; border:1px solid var(--line); border-radius:5px }
+  #cands li { display:flex; gap:8px; align-items:center; padding:4px 8px; cursor:pointer; border-bottom:1px solid #eef0f3 }
+  #cands li:hover { background:#f2f5f9 } #cands li.sel { background:#e3edfb }
+  .badge { font-size:10px; padding:1px 6px; border-radius:9px; color:#fff; background:var(--pending); margin-left:auto }
+  .badge.print { background:var(--ok) } .badge.no { background:var(--no) } .badge.unsure { background:var(--unsure) }
+  .v-print { background:var(--ok); color:#fff; border-color:var(--ok) } .v-no { background:var(--no); color:#fff; border-color:var(--no) } .v-unsure { background:var(--unsure); color:#fff; border-color:var(--unsure) }
+  #status { color:var(--mute); min-height:18px; margin-top:6px }
+  .meas { font-family:ui-monospace, monospace; font-size:12px; white-space:pre-line; background:#f6f7f9; padding:6px 8px; border-radius:4px }
+  small { color:var(--mute) }
+  kbd { font:11px ui-monospace, monospace; background:#eee; border:1px solid #ccc; border-radius:3px; padding:0 4px }
+</style>
+</head>
+<body>
+<aside>
+  <h1>mesoprint review <a href="/gallery" target="_blank" style="font-size:12px;font-weight:normal;margin-left:10px">gallery ↗</a></h1>
+  <label><span class="k">Tablet</span><select id="tablet" style="flex:1"></select></label>
+  <div id="tinfo"><small>–</small></div>
+
+  <h2>Candidates</h2>
+  <ul id="cands"></ul>
+  <div class="row">
+    <button id="next">Next unreviewed</button>
+    <button id="addbtn" title="then click on the overview where the print is">+ Add missed print</button>
+  </div>
+
+  <h2>Overview</h2>
+  <label><span class="k">Base</span>
+    <select id="ovbase" style="flex:1"><option value="surface">shaded surface</option><option value="msii_inv">MSII (grooves dark, like a photo)</option><option value="msii">MSII (grooves light)</option></select></label>
+  <label><span class="k">Heat map</span><input type="checkbox" id="ovheat" checked><input type="range" id="ovheatop" min="0" max="1" step="0.05" value="0.8" title="heat map opacity"></label>
+  <label><span class="k">Brightness</span><input type="range" id="ovbright" min="0.5" max="2.5" step="0.05" value="1"><input type="range" id="ovcontrast" min="0.3" max="2.5" step="0.05" value="1" title="contrast"></label>
+  <small>wheel = zoom, drag = pan; double-click = fit</small>
+  <label><span class="k">Markers</span><input type="checkbox" id="ovmarkers" checked> other candidates <small>(the selected one is always shown, in cyan, at the extraction radius; drag it to move the candidate)</small></label>
+
+  <h2>Extraction</h2>
+  <label><span class="k">Radius</span><input type="range" id="radius" min="4" max="20" step="1" value="8"><b id="radiusv">8 mm</b></label>
+  <label><span class="k">Mask level</span><input type="range" id="level" min="0.2" max="0.7" step="0.05" value="0.4"><b id="levelv">0.40</b></label>
+  <div class="row"><button id="reextract">Re-extract</button></div>
+  <small>Re-extract keeps a painted mask if the radius is unchanged; Reset (below) restores the automatic mask. Inside a painted mask the skeleton is traced even where the ridges are faint.</small>
+  <label><span class="k">Layer</span>
+    <select id="layer"><option value="msii">MSII</option><option value="relief">relief</option><option value="enhanced">enhanced</option></select> <small>dark = groove</small></label>
+  <label><span class="k">Mask opacity</span><input type="range" id="maskop" min="0" max="1" step="0.05" value="0.35"></label>
+  <label><span class="k">Brightness</span><input type="range" id="edbright" min="0.5" max="2.5" step="0.05" value="1"><input type="range" id="edcontrast" min="0.3" max="2.5" step="0.05" value="1" title="contrast"></label>
+
+  <h2>Mask tools</h2>
+  <div class="row">
+    <button class="tool on" data-tool="pan">Pan</button>
+    <button class="tool" data-tool="add">Paint +</button>
+    <button class="tool" data-tool="erase">Erase −</button>
+    <button class="tool" data-tool="line">Ridge line</button>
+    <button class="tool" data-tool="ruler">Ruler</button>
+  </div>
+  <label><span class="k">Brush</span><input type="range" id="brush" min="0.1" max="2" step="0.1" value="0.5"><b id="brushv">0.5 mm</b></label>
+  <div class="row">
+    <button id="grow">Grow 0.3 mm</button><button id="shrink">Shrink 0.3 mm</button><button id="resetmask">Reset</button>
+  </div>
+  <small>Wheel = zoom, drag = pan (or hold space). <kbd>1</kbd> fingerprint <kbd>2</kbd> not a print <kbd>3</kbd> unsure <kbd>n</kbd> next</small>
+
+  <h2>Ridges</h2>
+  <div class="row">
+    <button class="tool" data-tool="trace">Trace</button>
+    <select id="tracemode" style="flex:2"><option value="guide">stroke = guidance (steers the enhancement)</option><option value="trace">stroke = traced ridge (kept as drawn)</option></select>
+  </div>
+  <div class="row"><button id="skelupdate">Update skeleton</button><button id="strokeundo">Undo stroke</button><button id="strokeclear">Clear strokes</button></div>
+  <label><input type="checkbox" id="showskel" checked> show skeleton <small>(detected green, traced magenta; endings red, bifurcations blue)</small></label>
+  <div class="meas" id="skelinfo">–</div>
+
+  <h2>Measurements</h2>
+  <div class="meas" id="auto">–</div>
+  <div class="row"><button id="remeasure">Measure inside mask</button></div>
+  <div class="meas" id="manual">Ridge line: drag from the centre of one groove to the centre of another, across the ridges; the ends count as grooves, the ones between are detected. Ruler: distance between two points.</div>
+  <div class="row"><button id="nminus">− ridge</button><button id="nplus">+ ridge</button><button id="nundo">Undo last</button><button id="nclear">Clear all</button></div>
+  <small>Dots mark the grooves: drag a dot along its line; <kbd>Ctrl</kbd>+click on the line adds a dot there, <kbd>Shift</kbd>+click (or right-click) a dot removes it; + adds a dot in the largest gap, − removes the last one</small>
+
+  <h2>Decision</h2>
+  <div class="row">
+    <button id="v-print" class="v-print">Fingerprint</button>
+    <button id="v-no" class="v-no">Not a print</button>
+    <button id="v-unsure" class="v-unsure">Unsure</button>
+  </div>
+  <label><span class="k">Reason</span><select id="reason" style="flex:1"></select></label>
+  <textarea id="note" placeholder="note"></textarea>
+  <label><span class="k">Reviewer</span><input type="text" id="reviewer" style="flex:1" placeholder="name"></label>
+  <div class="row"><button id="remove" style="display:none">Remove this added candidate</button></div>
+  <div id="status"></div>
+</aside>
+<main>
+  <div id="ovwrap"><canvas id="ov"></canvas><div id="ovinfo"></div></div>
+  <div id="edwrap"><canvas id="ed"></canvas><div id="edinfo"></div></div>
+</main>
+
+<script>
+const $ = id => document.getElementById(id);
+async function api(url, opts) {
+  const r = await fetch(url, opts);
+  if (!r.ok) throw new Error(await r.text());
+  return (r.headers.get('content-type') || '').includes('json') ? r.json() : r;
+}
+const post = (url, body) => api(url, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)});
+const loadImg = src => new Promise((ok, err) => { const i = new Image(); i.onload = () => ok(i); i.onerror = () => err(new Error('image ' + src)); i.src = src; });
+const status = m => { $('status').textContent = m; };
+
+let T = null, cur = null, ex = null, layers = {}, maskData = null, overlay = null, msiiPix = null;
+let ov = {}, ovScale = 1, view = {s: 1, tx: 0, ty: 0}, tool = 'pan', addMode = false;
+let lines = [], curLine = null, drag = null, space = false, mouse = null;  // lines: kept ridge lines and rulers
+let strokes = [], curStroke = null, skel = null;  // reviewer strokes (guide / trace) and the skeleton result
+
+// ---------- tablets ----------
+async function loadTablets() {
+  const list = await api('/api/tablets');
+  const sel = $('tablet');
+  sel.innerHTML = '';
+  for (const t of list) {
+    const o = document.createElement('option');
+    o.value = t.id;
+    o.textContent = `SM ${t.id}  ${t.period ? t.period + (t.provenience ? ', ' + t.provenience : '') : ''}  ${t.label ? '[fp ' + t.label + ']' : ''}  ${t.reviewed}/${t.n} reviewed${t.mesh ? '' : '  (mesh missing)'}`;
+    o.disabled = !t.mesh;
+    sel.appendChild(o);
+  }
+  const first = list.find(t => t.mesh);
+  if (first) { sel.value = first.id; loadTablet(first.id); }
+}
+
+async function loadTablet(id) {
+  status(`loading SM ${id} (first time renders the overview, ~20 s)…`);
+  T = null; cur = null; ex = null; ov = {}; ovView = null;
+  drawOverview(); drawEditor();
+  try {
+    T = await api(`/api/tablet/${id}`);
+  } catch (e) { status(e.message); return; }
+  $('tinfo').innerHTML = `<small>${T.period || ''}${T.provenience ? ', ' + T.provenience : ''}${T.genre ? ' · ' + T.genre : ''}${T.label ? ' · catalogue: fingerprints ' + T.label : ''} ${T.note ? '· ' + T.note : ''} · MSII: ${T.msii} · threshold ${T.threshold}</small>`;
+  $('reason').innerHTML = T.reasons.map(r => `<option>${r}</option>`).join('');
+  for (const o of $('ovbase').options) o.disabled = !T.layout.layers.includes(o.value);
+  if ($('ovbase').selectedOptions[0].disabled) $('ovbase').value = 'surface';
+  for (const l of T.layout.layers) ov[l] = await loadImg(`/api/tablet/${id}/overview/${l}.png?t=${Date.now()}`);
+  renderCands();
+  drawOverview();
+  status('');
+  const c = T.candidates.find(c => !c.review) || T.candidates[0];
+  if (c) selectCand(c.id);
+}
+
+function statusOf(c) { return c.review ? c.review.verdict : 'pending'; }
+const COLOR = {pending: '#8a8f98', print: '#1a9c4b', no: '#d23a3a', unsure: '#d69b1d'};
+
+function renderCands() {
+  const ul = $('cands');
+  ul.innerHTML = '';
+  for (const c of T.candidates) {
+    const li = document.createElement('li');
+    li.className = c.id === cur ? 'sel' : '';
+    const s = c.score == null ? 'added' : `${c.score.toFixed(2)} ×${c.n_patches}`;
+    li.innerHTML = `<b>#${c.id}</b> <span>${s}</span> <span>${c.marker.face}</span> <span class="badge ${statusOf(c)}">${statusOf(c)}</span>`;
+    li.onclick = () => selectCand(c.id);
+    ul.appendChild(li);
+  }
+  const sel = $('tablet').selectedOptions[0];
+  if (sel) sel.textContent = sel.textContent.replace(/\d+\/\d+ reviewed/, `${T.candidates.filter(c => c.review).length}/${T.candidates.length} reviewed`);
+}
+
+// ---------- overview ----------
+let ovView = null;  // zoom/pan of the overview: canvas = image * s + (tx, ty)
+function fitOverview() {
+  const c = $('ov'), W = c.parentElement.clientWidth, H = c.parentElement.clientHeight, L = T.layout;
+  const s = Math.min(W / L.width, H / L.height);
+  ovView = {s, tx: (W - L.width * s) / 2, ty: (H - L.height * s) / 2};
+}
+function drawOverview() {
+  const c = $('ov'), W = c.width = c.parentElement.clientWidth, H = c.height = c.parentElement.clientHeight;
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = '#e6e8ec'; ctx.fillRect(0, 0, W, H);
+  if (!T || !ov.surface) return;
+  if (!ovView) fitOverview();
+  const L = T.layout, {s, tx, ty} = ovView;
+  ovScale = s;
+  const base = ov[$('ovbase').value] || ov.surface;
+  ctx.imageSmoothingEnabled = s < 1.5;
+  ctx.filter = `brightness(${$('ovbright').value}) contrast(${$('ovcontrast').value})`;
+  ctx.drawImage(base, tx, ty, L.width * s, L.height * s);
+  ctx.filter = 'none';
+  if ($('ovheat').checked) {
+    ctx.globalAlpha = Number($('ovheatop').value);
+    ctx.drawImage(ov.heat, tx, ty, L.width * s, L.height * s);
+    ctx.globalAlpha = 1;
+  }
+  ctx.font = 'bold 11px sans-serif';
+  if ($('ovmarkers').checked) for (const cd of T.candidates) {
+    if (cd.id === cur) continue;
+    const x = tx + cd.marker.px * s, y = ty + cd.marker.py * s;
+    ctx.beginPath(); ctx.arc(x, y, 7, 0, 2 * Math.PI);
+    ctx.lineWidth = 2; ctx.strokeStyle = COLOR[statusOf(cd)]; ctx.stroke();
+    ctx.fillStyle = COLOR[statusOf(cd)]; ctx.fillText('#' + cd.id, x + 10, y + 4);
+  }
+  const sel = T.candidates.find(c => c.id === cur);
+  if (sel) {  // the selected candidate: cyan circle at the extraction radius, so its extent is visible
+    const x = tx + sel.marker.px * s, y = ty + sel.marker.py * s, r = Number($('radius').value) / L.px_mm * s;
+    ctx.strokeStyle = '#00d0ff'; ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.arc(x, y, r, 0, 2 * Math.PI); ctx.stroke();
+    ctx.fillStyle = '#00d0ff'; ctx.beginPath(); ctx.arc(x, y, 2.5, 0, 2 * Math.PI); ctx.fill();
+    ctx.fillText(`#${sel.id} · ${$('radius').value} mm`, x + r + 4, y + 4);
+  }
+  $('ovinfo').textContent = addMode ? 'click on the tablet where the missed print is' : `heat map ${L.heat_range[0].toFixed(2)}–${L.heat_range[1].toFixed(2)}`;
+}
+function viewAt(x, y) {
+  for (const [k, v] of Object.entries(T.layout.views))
+    if (x >= v.ox && x < v.ox + v.w && y >= v.oy && y < v.oy + v.h) return k;
+  return null;
+}
+// overview mouse: drag the selected circle to move the candidate, drag elsewhere to pan,
+// wheel to zoom, double-click to fit; a plain click selects or adds
+let ovDrag = null;
+const ovPos = e => { const r = $('ov').getBoundingClientRect(); return {x: (e.clientX - r.left - ovView.tx) / ovView.s, y: (e.clientY - r.top - ovView.ty) / ovView.s}; };
+$('ov').addEventListener('mousedown', e => {
+  if (!T || !ovView) return;
+  const p = ovPos(e), sel = cur == null ? null : T.candidates.find(c => c.id === cur);
+  const rr = Number($('radius').value) / T.layout.px_mm;
+  if (sel && !addMode && Math.hypot(sel.marker.px - p.x, sel.marker.py - p.y) <= Math.max(rr, 12 / ovScale))
+    ovDrag = {kind: 'move', x0: p.x, y0: p.y, px: sel.marker.px, py: sel.marker.py, moved: false};
+  else
+    ovDrag = {kind: 'pan', cx: e.clientX, cy: e.clientY, tx: ovView.tx, ty: ovView.ty, moved: false};
+});
+$('ov').addEventListener('wheel', e => {
+  if (!T || !ovView) return; e.preventDefault();
+  const r = $('ov').getBoundingClientRect(), mx = e.clientX - r.left, my = e.clientY - r.top;
+  const f = Math.exp(-e.deltaY * 0.0015), s2 = Math.min(20, Math.max(0.05, ovView.s * f)), k = s2 / ovView.s;
+  ovView.tx = mx - (mx - ovView.tx) * k; ovView.ty = my - (my - ovView.ty) * k; ovView.s = s2;
+  drawOverview();
+}, {passive: false});
+$('ov').addEventListener('dblclick', () => { if (T) { fitOverview(); drawOverview(); } });
+window.addEventListener('mousemove', e => {
+  if (!ovDrag) return;
+  if (ovDrag.kind === 'pan') {
+    if (Math.hypot(e.clientX - ovDrag.cx, e.clientY - ovDrag.cy) > 3) ovDrag.moved = true;
+    if (ovDrag.moved) { ovView.tx = ovDrag.tx + e.clientX - ovDrag.cx; ovView.ty = ovDrag.ty + e.clientY - ovDrag.cy; drawOverview(); }
+    return;
+  }
+  const p = ovPos(e), sel = T.candidates.find(c => c.id === cur);
+  if (Math.hypot(p.x - ovDrag.x0, p.y - ovDrag.y0) > 3 / ovScale) ovDrag.moved = true;
+  if (ovDrag.moved) { sel.marker.px = ovDrag.px + p.x - ovDrag.x0; sel.marker.py = ovDrag.py + p.y - ovDrag.y0; drawOverview(); }
+});
+window.addEventListener('mouseup', async e => {
+  if (!ovDrag) return;
+  const d = ovDrag; ovDrag = null;
+  if (!d.moved) return;
+  lastMoveTime = Date.now();  // the click that follows this mouseup must not select or add
+  if (d.kind === 'pan') return;
+  const sel = T.candidates.find(c => c.id === cur), v = viewAt(sel.marker.px, sel.marker.py);
+  try {
+    if (!v) throw new Error('outside the views');
+    status('moving…');
+    const c = await post(`/api/tablet/${T.id}/cand/${cur}/move`, {view: v, px: sel.marker.px, py: sel.marker.py});
+    Object.assign(sel, c);
+    renderCands(); drawOverview();
+    await extract(null);
+  } catch (err) { sel.marker.px = d.px; sel.marker.py = d.py; drawOverview(); status('move failed: ' + err.message); }
+});
+$('ov').addEventListener('click', async e => {
+  if (!T) return;
+  const {x, y} = ovPos(e);
+  if (ovDragMoved()) return;
+  if (addMode) {
+    const v = viewAt(x, y);
+    if (!v) return;
+    try {
+      const c = await post(`/api/tablet/${T.id}/cand/add`, {view: v, px: x, py: y});
+      T.candidates.push(c); addMode = false; $('addbtn').classList.remove('on');
+      renderCands(); selectCand(c.id);
+    } catch (err) { status(err.message); }
+    return;
+  }
+  let best = null, bd = 14 / ovScale;
+  for (const c of T.candidates) {
+    const d = Math.hypot(c.marker.px - x, c.marker.py - y);
+    if (d < bd) { bd = d; best = c; }
+  }
+  if (best && best.id !== cur) selectCand(best.id);
+});
+let lastMoveTime = 0;
+function ovDragMoved() { return Date.now() - lastMoveTime < 300; }
+$('ovbase').onchange = $('ovheat').onchange = $('ovmarkers').onchange = $('ovheatop').oninput = drawOverview;
+$('ovbright').oninput = $('ovcontrast').oninput = drawOverview;
+$('edbright').oninput = $('edcontrast').oninput = () => drawEditor();
+$('addbtn').onclick = () => { addMode = !addMode; $('addbtn').classList.toggle('on', addMode); drawOverview(); };
+
+// ---------- candidate / extraction ----------
+async function selectCand(id) {
+  cur = id;
+  const c = T.candidates.find(c => c.id === id);
+  renderCands(); drawOverview();
+  $('remove').style.display = c.added ? '' : 'none';
+  $('note').value = c.review ? c.review.note || '' : '';
+  if (c.review && c.review.reason) $('reason').value = c.review.reason;
+  if (c.review && c.review.params) { $('radius').value = c.review.params.radius_mm; $('level').value = c.review.params.mask_level; syncLabels(); }
+  await extract(c.review ? c.review.files : null);
+}
+
+async function extract(reviewFiles, keepMask = false) {
+  if (cur == null) return;
+  const c = T.candidates.find(c => c.id === cur);
+  status('extracting…');
+  try {
+    ex = await api(`/api/tablet/${T.id}/cand/${cur}/extract?radius=${$('radius').value}&level=${$('level').value}`);
+    layers = {};
+    for (const l of ex.layers) layers[l] = await loadImg(`/api/ex/${ex.key}/${l}.png`);
+    let m;
+    if (reviewFiles) {  // the saved, edited mask
+      try { m = await loadImg(`/api/tablet/${T.id}/review/cand${String(cur).padStart(2, '0')}_maskonly.png?t=${Date.now()}`); } catch (e) {}
+    }
+    if (keepMask && maskData && maskData.width === ex.size) m = null;  // Re-extract keeps a painted mask of the same size
+    else if (!m || m.width !== ex.size) m = await loadImg(`/api/ex/${ex.key}/mask.png`);
+    if (m) initMask(m);
+    msiiPix = pixels(layers.msii);
+    lines = (c.review && c.review.manual && c.review.manual.lines) ? c.review.manual.lines.map(l => ({...l})) : []; curLine = null;
+    strokes = (c.review && c.review.strokes) ? c.review.strokes.map(s => ({...s})) : []; curStroke = null; skel = null;
+    updateSkeleton();
+    showAuto(c.review ? c.review.measurements : ex.measurements); showManual();
+    fitView(); drawEditor();
+    status('');
+  } catch (e) { status(e.message); }
+}
+$('reextract').onclick = () => extract(null, true);  // keeps your painted mask if the radius is unchanged; Reset restores the automatic one
+function syncLabels() { $('radiusv').textContent = $('radius').value + ' mm'; $('levelv').textContent = Number($('level').value).toFixed(2); $('brushv').textContent = $('brush').value + ' mm'; }
+$('level').oninput = $('brush').oninput = syncLabels;
+$('radius').oninput = () => { syncLabels(); drawOverview(); };  // the cyan circle follows the slider; Re-extract applies it
+$('layer').onchange = $('maskop').oninput = drawEditor;
+
+function pixels(img) {
+  const c = document.createElement('canvas'); c.width = img.width; c.height = img.height;
+  const x = c.getContext('2d'); x.drawImage(img, 0, 0);
+  return x.getImageData(0, 0, c.width, c.height);
+}
+function initMask(img) {
+  maskData = document.createElement('canvas'); maskData.width = img.width; maskData.height = img.height;
+  const x = maskData.getContext('2d'); x.drawImage(img, 0, 0);
+  const d = x.getImageData(0, 0, img.width, img.height), p = d.data;
+  for (let i = 0; i < p.length; i += 4) { p[i + 3] = p[i] > 127 ? 255 : 0; p[i] = p[i + 1] = p[i + 2] = 255; }
+  x.putImageData(d, 0, 0);
+  overlay = document.createElement('canvas'); overlay.width = img.width; overlay.height = img.height;
+}
+function maskURL() { return maskData.toDataURL('image/png'); }
+
+// ---------- editor ----------
+function fitView() {
+  const c = $('ed'), W = c.parentElement.clientWidth, H = c.parentElement.clientHeight;
+  view.s = Math.min(W / ex.size, H / ex.size) * 0.96;
+  view.tx = (W - ex.size * view.s) / 2; view.ty = (H - ex.size * view.s) / 2;
+}
+function drawEditor() {
+  const c = $('ed'), W = c.width = c.parentElement.clientWidth, H = c.height = c.parentElement.clientHeight;
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = '#26282c'; ctx.fillRect(0, 0, W, H);
+  if (!ex) { $('edinfo').textContent = ''; return; }
+  const img = layers[$('layer').value], S = ex.size * view.s;
+  ctx.imageSmoothingEnabled = view.s < 1.5;
+  ctx.filter = `brightness(${$('edbright').value}) contrast(${$('edcontrast').value})`;
+  ctx.drawImage(img, view.tx, view.ty, S, S);
+  ctx.filter = 'none';
+  const op = Number($('maskop').value);
+  if (maskData && op > 0) {
+    const o = overlay.getContext('2d');
+    o.globalCompositeOperation = 'source-over'; o.clearRect(0, 0, overlay.width, overlay.height);
+    o.fillStyle = '#ff8c00'; o.fillRect(0, 0, overlay.width, overlay.height);
+    o.globalCompositeOperation = 'destination-in'; o.drawImage(maskData, 0, 0);
+    o.globalCompositeOperation = 'source-over';
+    ctx.globalAlpha = op; ctx.drawImage(overlay, view.tx, view.ty, S, S); ctx.globalAlpha = 1;
+  }
+  if (skel && $('showskel').checked) {
+    ctx.lineWidth = Math.max(1, 1.5 * view.s);
+    for (const p of skel.polylines) {
+      ctx.strokeStyle = p.source === 'traced' ? '#e030d0' : '#18c060';
+      ctx.beginPath(); p.pts.forEach((q, i) => { const s = toScreen(q[0], q[1]); i ? ctx.lineTo(s.x, s.y) : ctx.moveTo(s.x, s.y); }); ctx.stroke();
+    }
+    ctx.lineWidth = 1.5;
+    for (const m of skel.minutiae) {
+      const s = toScreen(m.x, m.y), r = Math.max(4, 6 * view.s);
+      ctx.strokeStyle = m.type === 'ending' ? '#ff3030' : '#3080ff';
+      ctx.beginPath(); ctx.arc(s.x, s.y, r, 0, 7); ctx.stroke();
+    }
+  }
+  for (const st of [...strokes, ...(curStroke ? [curStroke] : [])]) {
+    ctx.strokeStyle = st.mode === 'trace' ? '#e030d0' : '#ff9a00'; ctx.lineWidth = 2; ctx.setLineDash(st.mode === 'trace' ? [] : [6, 4]);
+    ctx.beginPath(); st.pts.forEach((q, i) => { const s = toScreen(q[0], q[1]); i ? ctx.lineTo(s.x, s.y) : ctx.moveTo(s.x, s.y); }); ctx.stroke();
+    ctx.setLineDash([]);
+  }
+  ctx.font = '12px sans-serif';
+  [...lines, ...(curLine ? [curLine] : [])].forEach((l, i) => {
+    const a = toScreen(l.x0, l.y0), b = toScreen(l.x1, l.y1), ruler = l.kind === 'ruler';
+    ctx.strokeStyle = ruler ? '#ffd23f' : '#3df'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+    ctx.fillStyle = ctx.strokeStyle;
+    if (ruler) { for (const p of [a, b]) { ctx.beginPath(); ctx.arc(p.x, p.y, 3, 0, 7); ctx.fill(); } }
+    else if (l.peaks) for (const t of l.peaks) { const p = toScreen(l.x0 + (l.x1 - l.x0) * t, l.y0 + (l.y1 - l.y0) * t); ctx.beginPath(); ctx.arc(p.x, p.y, 3, 0, 7); ctx.fill(); }
+    if (l.length_mm != null) {
+      const label = ruler ? `${l.length_mm.toFixed(2)} mm` : `L${i + 1}: ${l.n_ridges} / ${l.length_mm.toFixed(2)} mm = ${l.n_ridges ? (l.length_mm / l.n_ridges).toFixed(3) : '–'}`;
+      ctx.fillStyle = '#000'; ctx.fillText(label, b.x + 7, b.y + 5); ctx.fillStyle = ctx.strokeStyle; ctx.fillText(label, b.x + 6, b.y + 4);
+    }
+  });
+  if (mouse && (tool === 'add' || tool === 'erase')) {
+    ctx.strokeStyle = tool === 'add' ? '#ff8c00' : '#f44'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.arc(mouse.x, mouse.y, brushPx() * view.s, 0, 7); ctx.stroke();
+  }
+  // scale bar: 1 mm
+  const mmpx = view.s / ex.mm_per_px;
+  ctx.fillStyle = '#fff'; ctx.fillRect(12, H - 18, mmpx, 3); ctx.font = '11px sans-serif'; ctx.fillText('1 mm', 14, H - 24);
+  const cd = T.candidates.find(c => c.id === cur);
+  $('edinfo').textContent = `#${cur} · ${cd.marker.face} · ${cd.score == null ? 'added by reviewer' : 'score ' + cd.score.toFixed(2) + ' · ' + cd.n_patches + ' patches'} · radius ${ex.radius_mm} mm · ${(ex.mm_per_px * 1000).toFixed(0)} µm/px · ${$('layer').value}`;
+}
+const toImg = (x, y) => ({x: (x - view.tx) / view.s, y: (y - view.ty) / view.s});
+const toScreen = (x, y) => ({x: x * view.s + view.tx, y: y * view.s + view.ty});
+const brushPx = () => Number($('brush').value) / ex.mm_per_px;
+
+const ed = $('ed');
+ed.addEventListener('wheel', e => {
+  if (!ex) return; e.preventDefault();
+  const r = ed.getBoundingClientRect(), mx = e.clientX - r.left, my = e.clientY - r.top;
+  const f = Math.exp(-e.deltaY * 0.0015), s2 = Math.min(30, Math.max(0.05, view.s * f)), k = s2 / view.s;
+  view.tx = mx - (mx - view.tx) * k; view.ty = my - (my - view.ty) * k; view.s = s2;
+  drawEditor();
+}, {passive: false});
+ed.addEventListener('mousedown', e => {
+  if (!ex) return;
+  const r = ed.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+  const hit = dotAt(x, y);
+  if (hit && e.button === 0 && e.shiftKey) { hit.line.peaks.splice(hit.index, 1); recomputeLine(hit.line); drawEditor(); return; }  // Shift+click removes a dot
+  if (e.ctrlKey && e.button === 0) {  // Ctrl+click on a ridge line adds a dot there
+    const p = toImg(x, y);
+    for (const l of lines) {
+      if (l.kind !== 'ridge') continue;
+      const dx = l.x1 - l.x0, dy = l.y1 - l.y0, t = ((p.x - l.x0) * dx + (p.y - l.y0) * dy) / (dx * dx + dy * dy);
+      if (t < 0 || t > 1) continue;
+      const d = Math.hypot(p.x - (l.x0 + dx * t), p.y - (l.y0 + dy * t)) * view.s;
+      if (d <= 10) { l.peaks.push(t); l.peaks.sort((a, b) => a - b); recomputeLine(l); drawEditor(); return; }
+    }
+  }
+  if (hit && e.button === 0) { drag = {kind: 'dot', ...hit}; return; }
+  if (e.button === 1 || space || tool === 'pan') { drag = {kind: 'pan', x, y, tx: view.tx, ty: view.ty}; return; }
+  const p = toImg(x, y);
+  if (tool === 'add' || tool === 'erase') { drag = {kind: 'paint', last: p}; paint(p, p); }
+  else if (tool === 'line' || tool === 'ruler') { curLine = {kind: tool === 'ruler' ? 'ruler' : 'ridge', x0: p.x, y0: p.y, x1: p.x, y1: p.y}; drag = {kind: 'line'}; }
+  else if (tool === 'trace') { curStroke = {mode: $('tracemode').value, pts: [[p.x, p.y]]}; drag = {kind: 'stroke'}; }
+  drawEditor();
+});
+window.addEventListener('mousemove', e => {
+  if (!ex) return;
+  const r = ed.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+  mouse = {x, y};
+  if (drag && drag.kind === 'pan') { view.tx = drag.tx + x - drag.x; view.ty = drag.ty + y - drag.y; }
+  else if (drag && drag.kind === 'paint') { const p = toImg(x, y); paint(drag.last, p); drag.last = p; }
+  else if (drag && drag.kind === 'line') { const p = toImg(x, y); curLine.x1 = p.x; curLine.y1 = p.y; curLine.length_mm = Math.hypot(p.x - curLine.x0, p.y - curLine.y0) * ex.mm_per_px; }
+  else if (drag && drag.kind === 'stroke') { const p = toImg(x, y), q = curStroke.pts[curStroke.pts.length - 1]; if (Math.hypot(p.x - q[0], p.y - q[1]) >= 2) curStroke.pts.push([p.x, p.y]); }
+  else if (drag && drag.kind === 'dot') {  // slide the dot along its line
+    const l = drag.line, p = toImg(x, y), dx = l.x1 - l.x0, dy = l.y1 - l.y0;
+    l.peaks[drag.index] = Math.min(1, Math.max(0, ((p.x - l.x0) * dx + (p.y - l.y0) * dy) / (dx * dx + dy * dy)));
+    recomputeLine(l);
+  }
+  drawEditor();
+});
+window.addEventListener('mouseup', () => {
+  if (drag && drag.kind === 'line') finishLine();
+  if (drag && drag.kind === 'stroke') { if (curStroke.pts.length >= 3) strokes.push(curStroke); curStroke = null; }
+  if (drag && drag.kind === 'dot') { drag.line.peaks.sort((a, b) => a - b); recomputeLine(drag.line); }
+  drag = null; drawEditor();
+});
+ed.addEventListener('contextmenu', e => {  // right-click on a dot removes it
+  const r = ed.getBoundingClientRect(), hit = dotAt(e.clientX - r.left, e.clientY - r.top);
+  if (!hit) return;
+  e.preventDefault();
+  hit.line.peaks.splice(hit.index, 1); recomputeLine(hit.line); drawEditor();
+});
+function dotAt(x, y) {
+  for (const l of lines) {
+    if (l.kind !== 'ridge' || !l.peaks) continue;
+    for (let i = 0; i < l.peaks.length; i++) {
+      const p = toScreen(l.x0 + (l.x1 - l.x0) * l.peaks[i], l.y0 + (l.y1 - l.y0) * l.peaks[i]);
+      if (Math.hypot(p.x - x, p.y - y) <= 7) return {line: l, index: i};
+    }
+  }
+  return null;
+}
+function recomputeLine(l) {
+  const len = Math.hypot(l.x1 - l.x0, l.y1 - l.y0) * ex.mm_per_px, pk = l.peaks;
+  l.n_ridges = Math.max(pk.length - 1, 0);
+  l.length_mm = pk.length >= 2 ? +((Math.max(...pk) - Math.min(...pk)) * len).toFixed(3) : 0;
+  showManual();
+}
+ed.addEventListener('mouseleave', () => { mouse = null; drawEditor(); });
+function paint(a, b) {
+  const x = maskData.getContext('2d');
+  x.globalCompositeOperation = tool === 'add' ? 'source-over' : 'destination-out';
+  x.strokeStyle = '#fff'; x.lineCap = 'round'; x.lineJoin = 'round'; x.lineWidth = 2 * brushPx();
+  x.beginPath(); x.moveTo(a.x, a.y); x.lineTo(b.x, b.y); x.stroke();
+  x.globalCompositeOperation = 'source-over';
+}
+document.querySelectorAll('.tool').forEach(b => b.onclick = () => { tool = b.dataset.tool; document.querySelectorAll('.tool').forEach(o => o.classList.toggle('on', o === b)); ed.style.cursor = tool === 'pan' ? 'grab' : 'crosshair'; });
+window.addEventListener('keydown', e => {
+  if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+  if (e.code === 'Space') { space = true; e.preventDefault(); }
+  if (e.key === '1') saveVerdict('print'); if (e.key === '2') saveVerdict('no'); if (e.key === '3') saveVerdict('unsure');
+  if (e.key === 'n') $('next').click();
+});
+window.addEventListener('keyup', e => { if (e.code === 'Space') space = false; });
+window.addEventListener('resize', () => { if (T) fitOverview(); drawOverview(); if (ex) { fitView(); drawEditor(); } });
+
+async function morphMask(op) {
+  status(op + '…');
+  try {
+    const r = await post(`/api/ex/${ex.key}/morph`, {mask: maskURL(), op, mm: 0.3});
+    initMask(await loadImg(URL.createObjectURL(await r.blob())));
+    drawEditor(); status('');
+  } catch (e) { status(e.message); }
+}
+$('grow').onclick = () => morphMask('grow');
+$('shrink').onclick = () => morphMask('shrink');
+$('resetmask').onclick = async () => { initMask(await loadImg(`/api/ex/${ex.key}/mask.png`)); drawEditor(); };
+
+// ---------- skeleton ----------
+async function updateSkeleton() {
+  if (!ex) return;
+  status(strokes.some(s => s.mode === 'guide') ? 'enhancing with guidance and tracing ridges…' : 'tracing ridges…');
+  try {
+    const r = await post(`/api/ex/${ex.key}/skeleton`, {mask: maskURL(), strokes});
+    skel = r;
+    if (r.guided) { layers.enhanced = await loadImg(`/api/ex/${ex.key}/enhanced.png?t=${Date.now()}`); }
+    const sp = r.spacing || {}, man = lines.length ? manualSummary().mean_ridge_breadth_mm : null;
+    const cal = sp.mean_ridge_breadth_mm == null ? 'ridge breadth from skeleton: not enough neighbouring ridges'
+      : `ridge breadth from skeleton: ${sp.mean_ridge_breadth_mm} mm (quartiles ${sp.q1}–${sp.q3}, ${sp.length_mm} mm of ridge measured)` + (man ? ` · manual lines ${man} mm (${(100 * (sp.mean_ridge_breadth_mm / man - 1)).toFixed(0) > 0 ? '+' : ''}${(100 * (sp.mean_ridge_breadth_mm / man - 1)).toFixed(0)} %)` : '');
+    $('skelinfo').textContent = `${r.polylines.filter(p => p.source === 'detected').length} detected lines, ${r.polylines.filter(p => p.source === 'traced').length} traced · ${r.ridge_length_mm} mm of ridge · minutiae: ${r.minutiae.filter(m => m.type === 'ending').length} endings, ${r.minutiae.filter(m => m.type === 'bifurcation').length} bifurcations${r.guided ? ' · enhancement guided by your strokes' : ''}\n${cal}`;
+    drawEditor(); status('');
+  } catch (e) { status(e.message); }
+}
+$('skelupdate').onclick = updateSkeleton;
+$('strokeundo').onclick = () => { strokes.pop(); drawEditor(); };
+$('strokeclear').onclick = () => { strokes = []; drawEditor(); };
+$('showskel').onchange = () => drawEditor();
+
+// ---------- measurements ----------
+function showAuto(m) {
+  if (!m) { $('auto').textContent = '–'; return; }
+  $('auto').textContent = `auto (spectral, inside ${m.isolated ? 'mask' : 'whole region'}):\nmean ridge breadth  ${m.mean_ridge_breadth_mm} mm\nridges per 5 mm     ${m.ridge_count_per_5mm}\nridge depth (rms)   ${m.ridge_amplitude_um_rms} µm\narea                ${m.area_mm2} mm²`;
+}
+$('remeasure').onclick = async () => {
+  status('measuring…');
+  try { showAuto(await post(`/api/ex/${ex.key}/measure`, {mask: maskURL()})); status(''); } catch (e) { status(e.message); }
+};
+function finishLine() {
+  const l = curLine; curLine = null;
+  if (!l) return;
+  const dx = l.x1 - l.x0, dy = l.y1 - l.y0, len = Math.hypot(dx, dy);
+  if (len < 10) { showManual(); return; }
+  l.length_mm = +(len * ex.mm_per_px).toFixed(3);
+  if (l.kind === 'ridge') {
+    // sample the MSII along the line, extended by 0.4 mm at both ends so grooves at the
+    // ends are seen too; remove the slow trend (about 1 mm); dots go on the groove centres
+    // (local maxima of the inverted profile = groove centres), at least 0.3 mm apart
+    const w = msiiPix.width, d = msiiPix.data, n = Math.round(len), extra = Math.round(0.4 / ex.mm_per_px), prof = [];
+    for (let i = -extra; i <= n + extra; i++) {
+      const x = Math.round(l.x0 + dx * i / n), y = Math.round(l.y0 + dy * i / n);
+      prof.push((x >= 0 && y >= 0 && x < w && y < msiiPix.height) ? 255 - d[(y * w + x) * 4] : 128);  // grooves are dark: invert so they are maxima
+    }
+    const N = prof.length, win = Math.max(3, Math.round(1.0 / ex.mm_per_px));
+    const det = prof.map((v, i) => { let s = 0, k = 0; for (let j = Math.max(0, i - win); j <= Math.min(N - 1, i + win); j++) { s += prof[j]; k++; } return v - s / k; });
+    const sm = det.map((v, i) => (det[Math.max(0, i - 1)] + v + det[Math.min(N - 1, i + 1)]) / 3);
+    const cand = [];
+    for (let i = 1; i < N - 1; i++) if (sm[i] > 0 && sm[i] >= sm[i - 1] && sm[i] > sm[i + 1]) cand.push(i);
+    cand.sort((a, b) => sm[b] - sm[a]);
+    const minSep = Math.round(0.3 / ex.mm_per_px), kept = [];
+    for (const i of cand) if (kept.every(j => Math.abs(i - j) >= minSep)) kept.push(i);
+    // the ends of the drawn line are the first and last groove centres (standard method:
+    // centre to centre of the same feature); grooves in between are detected automatically
+    const margin = (0.25 / ex.mm_per_px) / n;
+    l.peaks = [0, ...kept.map(i => (i - extra) / n).filter(t => t > margin && t < 1 - margin).sort((a, b) => a - b), 1];
+    // breadth = span from the first to the last detected groove / periods between them,
+    // so the overhang of the drawn line beyond the outer grooves does not count
+    l.drawn_mm = l.drawn_mm || l.length_mm;
+    const span = Math.hypot(l.x1 - l.x0, l.y1 - l.y0) * ex.mm_per_px;
+    l.n_ridges = Math.max(l.peaks.length - 1, 0);
+    l.length_mm = l.peaks.length >= 2 ? +((l.peaks[l.peaks.length - 1] - l.peaks[0]) * span).toFixed(3) : 0;
+  }
+  lines.push(l);
+  showManual();
+}
+function manualSummary() {
+  const ridge = lines.filter(l => l.kind === 'ridge' && l.n_ridges > 0);
+  const n = ridge.reduce((s, l) => s + l.n_ridges, 0), L = ridge.reduce((s, l) => s + l.length_mm, 0);
+  return {lines: lines.map(l => ({...l, peaks: l.peaks ? l.peaks.map(t => +t.toFixed(4)) : undefined})), n_ridges: n, length_mm: +L.toFixed(3),
+          mean_ridge_breadth_mm: n ? +(L / n).toFixed(3) : null, n_lines: ridge.length,
+          rulers_mm: lines.filter(l => l.kind === 'ruler').map(l => l.length_mm)};
+}
+function showManual() {
+  if (!lines.length) { $('manual').textContent = 'Ridge line: drag from the centre of one groove to the centre of another, across the ridges; the ends count as grooves, the ones between are detected. Ruler: distance between two points.'; return; }
+  const m = manualSummary(), rows = [];
+  lines.forEach((l, i) => rows.push(l.kind === 'ruler' ? `ruler ${i + 1}: ${l.length_mm.toFixed(2)} mm`
+    : `L${i + 1}: ${l.n_ridges} periods / ${l.length_mm.toFixed(2)} mm = ${l.n_ridges ? (l.length_mm / l.n_ridges).toFixed(3) : '–'} mm${lineWarnings(l)}`));
+  if (m.n_lines) rows.push(`all ${m.n_lines} ridge lines: ${m.n_ridges} periods over ${m.length_mm} mm\nmean ridge breadth  ${m.mean_ridge_breadth_mm} mm   (${(5 / m.mean_ridge_breadth_mm).toFixed(1)} ridges / 5 mm)`);
+  $('manual').textContent = rows.join('\n');
+}
+function lineWarnings(l) {  // gaps that look like a missed groove, and the angle to the ridges (from the skeleton)
+  const out = [];
+  if (l.peaks && l.peaks.length > 2) {
+    const span = Math.hypot(l.x1 - l.x0, l.y1 - l.y0) * ex.mm_per_px, gaps = [];
+    for (let i = 1; i < l.peaks.length; i++) gaps.push((l.peaks[i] - l.peaks[i - 1]) * span);
+    const med = gaps.slice().sort((a, b) => a - b)[Math.floor(gaps.length / 2)];
+    const big = gaps.filter(g => g > 1.6 * med).length;
+    if (big) out.push(`${big} gap${big > 1 ? 's' : ''} look like a missed groove (+ ridge, then drag)`);
+  }
+  if (skel && skel.polylines.length) {
+    const L = [l.x1 - l.x0, l.y1 - l.y0], n = Math.hypot(...L); let c2 = 0, s2 = 0;
+    for (const p of skel.polylines) for (let i = 1; i < p.pts.length; i++) {
+      const m = [(p.pts[i][0] + p.pts[i - 1][0]) / 2, (p.pts[i][1] + p.pts[i - 1][1]) / 2];
+      const t = ((m[0] - l.x0) * L[0] + (m[1] - l.y0) * L[1]) / (n * n);
+      if (t < 0 || t > 1) continue;
+      const d = Math.hypot(m[0] - (l.x0 + L[0] * t), m[1] - (l.y0 + L[1] * t));
+      if (d > 0.5 / ex.mm_per_px) continue;
+      const a = Math.atan2(p.pts[i][1] - p.pts[i - 1][1], p.pts[i][0] - p.pts[i - 1][0]);
+      c2 += Math.cos(2 * a); s2 += Math.sin(2 * a);
+    }
+    if (c2 || s2) {
+      const ridge = 0.5 * Math.atan2(s2, c2), off = Math.abs(Math.asin(Math.min(1, Math.abs(Math.cos(ridge) * L[0] / n + Math.sin(ridge) * L[1] / n)))) * 180 / Math.PI;
+      if (off > 8) out.push(`${off.toFixed(0)}° off perpendicular: perpendicular spacing ≈ ${(l.length_mm / Math.max(l.n_ridges, 1) * Math.cos(off * Math.PI / 180)).toFixed(3)} mm`);
+    }
+  }
+  return out.length ? '\n   ⚠ ' + out.join('; ') : '';
+}
+const lastRidge = () => [...lines].reverse().find(l => l.kind === 'ridge');
+$('nminus').onclick = () => { const l = lastRidge(); if (l && l.peaks.length > 2) { l.peaks.pop(); recomputeLine(l); drawEditor(); } };
+$('nplus').onclick = () => {  // add a dot in the middle of the largest gap
+  const l = lastRidge(); if (!l) return;
+  const pk = l.peaks.slice().sort((a, b) => a - b);
+  if (pk.length < 2) { pk.push(pk.length ? Math.min(1, pk[0] + 0.2) : 0.5); }
+  else { let g = 0, at = 0.5; for (let i = 1; i < pk.length; i++) if (pk[i] - pk[i - 1] > g) { g = pk[i] - pk[i - 1]; at = (pk[i] + pk[i - 1]) / 2; } pk.push(at); }
+  l.peaks = pk.sort((a, b) => a - b); recomputeLine(l); drawEditor();
+};
+$('nundo').onclick = () => { lines.pop(); showManual(); drawEditor(); };
+$('nclear').onclick = () => { lines = []; showManual(); drawEditor(); };
+
+// ---------- decision ----------
+$('reviewer').value = localStorage.getItem('reviewer') || '';
+$('reviewer').onchange = () => localStorage.setItem('reviewer', $('reviewer').value);
+async function saveVerdict(verdict) {
+  if (!ex) return;
+  status('saving…');
+  try {
+    const body = {key: ex.key, verdict, reason: verdict === 'no' ? $('reason').value : '', note: $('note').value,
+                  reviewer: $('reviewer').value, mask: maskURL(), manual: lines.length ? manualSummary() : null,
+                  strokes, skeleton: true};
+    const r = await post(`/api/tablet/${T.id}/cand/${cur}/review`, body);
+    const c = T.candidates.find(c => c.id === cur);
+    c.review = r.review;
+    showAuto(r.review.measurements);
+    if (r.review.skeleton) $('skelinfo').textContent += ` · saved (${r.review.skeleton.n_minutiae} minutiae)`;
+    renderCands(); drawOverview();
+    status(`saved: #${cur} = ${verdict}`);
+  } catch (e) { status(e.message); }
+}
+$('v-print').onclick = () => saveVerdict('print');
+$('v-no').onclick = () => saveVerdict('no');
+$('v-unsure').onclick = () => saveVerdict('unsure');
+$('next').onclick = () => {
+  if (!T) return;
+  const i = T.candidates.findIndex(c => c.id === cur);
+  const order = [...T.candidates.slice(i + 1), ...T.candidates.slice(0, i + 1)];
+  const c = order.find(c => !c.review);
+  if (c) selectCand(c.id); else status('all candidates of this tablet are reviewed');
+};
+$('remove').onclick = async () => {
+  if (!confirm(`Remove added candidate #${cur}?`)) return;
+  await post(`/api/tablet/${T.id}/cand/${cur}/remove`, {});
+  T.candidates = T.candidates.filter(c => c.id !== cur); cur = null; ex = null;
+  renderCands(); drawOverview(); drawEditor();
+};
+$('tablet').onchange = e => loadTablet(e.target.value);
+
+syncLabels();
+loadTablets();
+</script>
+</body>
+</html>

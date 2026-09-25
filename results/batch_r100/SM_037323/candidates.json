@@ -1,0 +1,83 @@
+{
+  "mesh": {
+    "name": "SM_037323_GMO_r1.00_n4_v256.volume",
+    "vertices": 2218723,
+    "faces": 4437442,
+    "bbox_mm": [
+      38.302,
+      51.474,
+      18.497
+    ],
+    "median_edge_mm": 0.05248,
+    "samples_per_ridge_0.45mm": 8.6,
+    "vertex_properties": [
+      "blue",
+      "feature_vector",
+      "flags",
+      "green",
+      "labelid",
+      "nx",
+      "ny",
+      "nz",
+      "quality",
+      "red"
+    ]
+  },
+  "params": {
+    "patch_radius": 3.0,
+    "stride": 2.0,
+    "grid_spacing": null,
+    "min_grid_spacing": 0.04,
+    "highpass_sigma": 0.8,
+    "normal_cos": 0.3,
+    "min_valid": 0.6,
+    "band": [
+      1.6,
+      3.6
+    ],
+    "msii_radius": 0.3,
+    "periodic_level": 0.5,
+    "threshold": 0.2,
+    "batch": 128
+  },
+  "msii_source": "GigaMesh file, r = 0.3125 mm",
+  "grid_spacing_mm": 0.052483317781412415,
+  "candidates": [
+    {
+      "id": 1,
+      "centre": [
+        -2.982,
+        2.37,
+        5.535
+      ],
+      "normal": [
+        -0.0089,
+        -0.7588,
+        0.6513
+      ],
+      "score": 0.2037,
+      "mean_score": 0.2037,
+      "n_patches": 1,
+      "area_mm2": 4.0,
+      "ridge_period_mm": 0.4992,
+      "straightness": 0.945,
+      "measurements": {
+        "ridge_frequency_per_mm": 1.6309,
+        "mean_ridge_breadth_mm": 0.6131,
+        "ridge_count_per_5mm": 8.15,
+        "ridge_amplitude_um_rms": 8.94,
+        "local_coherence": 0.336,
+        "straightness": 0.96,
+        "area_mm2": 10.8,
+        "isolated": true
+      },
+      "files": {
+        "relief": "cand01_relief.png",
+        "msii": "cand01_msii.png",
+        "enhanced": "cand01_enhanced.png",
+        "print": "cand01_print.png",
+        "mask": "cand01_mask.png"
+      }
+    }
+  ]
+}

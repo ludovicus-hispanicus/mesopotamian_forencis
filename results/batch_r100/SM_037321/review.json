@@ -1,0 +1,457 @@
+{
+  "candidates": {
+    "1": {
+      "verdict": "print",
+      "reason": "",
+      "note": "",
+      "reviewer": "Luis",
+      "time": "2026-09-25 13:16",
+      "centre": [
+        5.999,
+        40.015,
+        0.849
+      ],
+      "params": {
+        "radius_mm": 8.0,
+        "mask_level": 0.45
+      },
+      "measurements": {
+        "mean_ridge_breadth_mm": 0.647,
+        "ridge_count_per_5mm": 7.7,
+        "ridge_amplitude_um_rms": 13.6,
+        "straightness": 0.77,
+        "area_mm2": 48.3,
+        "isolated": true
+      },
+      "manual": {
+        "lines": [
+          {
+            "kind": "ridge",
+            "x0": 612.8069595476184,
+            "y0": 346.84548914597974,
+            "x1": 127.40088677524537,
+            "y1": 486.74008265291116,
+            "length_mm": 12.768,
+            "peaks": [
+              0,
+              0.0356,
+              0.0851,
+              0.1287,
+              0.1996,
+              0.2396,
+              0.297,
+              0.3406,
+              0.4112,
+              0.4547,
+              0.5233,
+              0.5989,
+              0.6619,
+              0.7273,
+              0.7929,
+              0.8537,
+              0.9359,
+              0.9951
+            ],
+            "drawn_mm": 12.831,
+            "n_ridges": 17
+          }
+        ],
+        "n_ridges": 17,
+        "length_mm": 12.768,
+        "mean_ridge_breadth_mm": 0.751,
+        "n_lines": 1,
+        "rulers_mm": []
+      },
+      "strokes": [],
+      "skeleton": {
+        "ridge_length_mm": 75.3,
+        "guided": false,
+        "n_strokes": 0,
+        "n_minutiae": 7,
+        "file": "cand01_skeleton.json",
+        "ridge_breadth_mm": 0.568,
+        "ridge_breadth_q1_q3": [
+          0.501,
+          0.618
+        ]
+      },
+      "files": [
+        "cand01_mask.png",
+        "cand01_print.png",
+        "cand01_msii.png",
+        "cand01_maskonly.png"
+      ]
+    },
+    "2": {
+      "verdict": "print",
+      "reason": "",
+      "note": "",
+      "reviewer": "Luis",
+      "time": "2026-09-25 13:18",
+      "centre": [
+        -17.548,
+        34.043,
+        1.058
+      ],
+      "params": {
+        "radius_mm": 6.0,
+        "mask_level": 0.45
+      },
+      "measurements": {
+        "mean_ridge_breadth_mm": 0.636,
+        "ridge_count_per_5mm": 7.9,
+        "ridge_amplitude_um_rms": 6.4,
+        "straightness": 0.87,
+        "area_mm2": 7.5,
+        "isolated": true
+      },
+      "manual": {
+        "lines": [
+          {
+            "kind": "ridge",
+            "x0": 287.1587301587302,
+            "y0": 136.4212962962963,
+            "x1": 295.51851851851853,
+            "y1": 339.6686507936508,
+            "length_mm": 5.167,
+            "peaks": [
+              0,
+              0.1084,
+              0.2463,
+              0.3547,
+              0.4975,
+              0.6305,
+              0.7734,
+              0.9015,
+              1
+            ],
+            "drawn_mm": 5.167,
+            "n_ridges": 8
+          }
+        ],
+        "n_ridges": 8,
+        "length_mm": 5.167,
+        "mean_ridge_breadth_mm": 0.646,
+        "n_lines": 1,
+        "rulers_mm": []
+      },
+      "strokes": [],
+      "skeleton": {
+        "ridge_length_mm": 10.6,
+        "guided": false,
+        "n_strokes": 0,
+        "n_minutiae": 0,
+        "file": "cand02_skeleton.json",
+        "ridge_breadth_mm": 0.58,
+        "ridge_breadth_q1_q3": [
+          0.504,
+          0.604
+        ]
+      },
+      "files": [
+        "cand02_mask.png",
+        "cand02_print.png",
+        "cand02_msii.png",
+        "cand02_maskonly.png"
+      ]
+    },
+    "3": {
+      "verdict": "print",
+      "reason": "",
+      "note": "",
+      "reviewer": "Luis",
+      "time": "2026-09-25 13:19",
+      "centre": [
+        -8.54,
+        1.578,
+        2.793
+      ],
+      "params": {
+        "radius_mm": 4.0,
+        "mask_level": 0.45
+      },
+      "measurements": {
+        "mean_ridge_breadth_mm": 0.615,
+        "ridge_count_per_5mm": 8.1,
+        "ridge_amplitude_um_rms": 6.6,
+        "straightness": 0.7,
+        "area_mm2": 22.7,
+        "isolated": true
+      },
+      "manual": {
+        "lines": [
+          {
+            "kind": "ridge",
+            "x0": 7.548190561744341,
+            "y0": 122.22672367920067,
+            "x1": 303.24679517494064,
+            "y1": 125.91373869931535,
+            "length_mm": 7.511,
+            "peaks": [
+              0,
+              0.0777,
+              0.152,
+              0.2736,
+              0.3615,
+              0.5405,
+              0.6351,
+              0.7162,
+              0.8277,
+              0.9223,
+              1
+            ],
+            "drawn_mm": 7.511,
+            "n_ridges": 10
+          }
+        ],
+        "n_ridges": 10,
+        "length_mm": 7.511,
+        "mean_ridge_breadth_mm": 0.751,
+        "n_lines": 1,
+        "rulers_mm": []
+      },
+      "strokes": [],
+      "skeleton": {
+        "ridge_length_mm": 35.6,
+        "guided": false,
+        "n_strokes": 0,
+        "n_minutiae": 4,
+        "file": "cand03_skeleton.json",
+        "ridge_breadth_mm": 0.558,
+        "ridge_breadth_q1_q3": [
+          0.508,
+          0.596
+        ]
+      },
+      "files": [
+        "cand03_mask.png",
+        "cand03_print.png",
+        "cand03_msii.png",
+        "cand03_maskonly.png"
+      ]
+    },
+    "4": {
+      "verdict": "print",
+      "reason": "",
+      "note": "",
+      "reviewer": "Luis",
+      "time": "2026-09-25 13:19",
+      "centre": [
+        -17.499,
+        8.955,
+        -1.028
+      ],
+      "params": {
+        "radius_mm": 4.0,
+        "mask_level": 0.45
+      },
+      "measurements": {
+        "mean_ridge_breadth_mm": 0.524,
+        "ridge_count_per_5mm": 9.5,
+        "ridge_amplitude_um_rms": 7.7,
+        "straightness": 1.0,
+        "area_mm2": 7.5,
+        "isolated": true
+      },
+      "manual": {
+        "lines": [
+          {
+            "kind": "ridge",
+            "x0": 141.2804232804233,
+            "y0": 137.62301587301587,
+            "x1": 27.029982363315685,
+            "y1": 199.276455026455,
+            "length_mm": 3.298,
+            "peaks": [
+              0,
+              0.3385,
+              0.5,
+              0.6615,
+              0.8308,
+              1
+            ],
+            "drawn_mm": 3.298,
+            "n_ridges": 5
+          }
+        ],
+        "n_ridges": 5,
+        "length_mm": 3.298,
+        "mean_ridge_breadth_mm": 0.66,
+        "n_lines": 1,
+        "rulers_mm": []
+      },
+      "strokes": [],
+      "skeleton": {
+        "ridge_length_mm": 11.8,
+        "guided": false,
+        "n_strokes": 0,
+        "n_minutiae": 0,
+        "file": "cand04_skeleton.json",
+        "ridge_breadth_mm": 0.503,
+        "ridge_breadth_q1_q3": [
+          0.467,
+          0.521
+        ]
+      },
+      "files": [
+        "cand04_mask.png",
+        "cand04_print.png",
+        "cand04_msii.png",
+        "cand04_maskonly.png"
+      ]
+    },
+    "5": {
+      "verdict": "print",
+      "reason": "",
+      "note": "",
+      "reviewer": "Luis",
+      "time": "2026-09-25 13:20",
+      "centre": [
+        -1.015,
+        3.379,
+        6.563
+      ],
+      "params": {
+        "radius_mm": 4.0,
+        "mask_level": 0.45
+      },
+      "measurements": {
+        "mean_ridge_breadth_mm": 0.485,
+        "ridge_count_per_5mm": 10.3,
+        "ridge_amplitude_um_rms": 7.0,
+        "straightness": 0.9,
+        "area_mm2": 12.6,
+        "isolated": true
+      },
+      "manual": {
+        "lines": [
+          {
+            "kind": "ridge",
+            "x0": 69.52557319223985,
+            "y0": 157.8258377425044,
+            "x1": 151.38183421516754,
+            "y1": 228.1873897707231,
+            "length_mm": 2.742,
+            "peaks": [
+              0,
+              0.1852,
+              0.4074,
+              0.6389,
+              0.8333,
+              1
+            ],
+            "drawn_mm": 2.742,
+            "n_ridges": 5
+          }
+        ],
+        "n_ridges": 5,
+        "length_mm": 2.742,
+        "mean_ridge_breadth_mm": 0.548,
+        "n_lines": 1,
+        "rulers_mm": []
+      },
+      "strokes": [],
+      "skeleton": {
+        "ridge_length_mm": 18.7,
+        "guided": false,
+        "n_strokes": 0,
+        "n_minutiae": 0,
+        "file": "cand05_skeleton.json",
+        "ridge_breadth_mm": 0.503,
+        "ridge_breadth_q1_q3": [
+          0.467,
+          0.557
+        ]
+      },
+      "files": [
+        "cand05_mask.png",
+        "cand05_print.png",
+        "cand05_msii.png",
+        "cand05_maskonly.png"
+      ]
+    },
+    "6": {
+      "verdict": "print",
+      "reason": "",
+      "note": "",
+      "reviewer": "Luis",
+      "time": "2026-09-25 13:20",
+      "centre": [
+        -13.112,
+        15.108,
+        7.484
+      ],
+      "params": {
+        "radius_mm": 4.0,
+        "mask_level": 0.45
+      },
+      "measurements": {
+        "mean_ridge_breadth_mm": 0.631,
+        "ridge_count_per_5mm": 7.9,
+        "ridge_amplitude_um_rms": 53.0,
+        "straightness": 1.0,
+        "area_mm2": 4.7,
+        "isolated": true
+      },
+      "manual": null,
+      "strokes": [],
+      "skeleton": {
+        "ridge_length_mm": 6.3,
+        "guided": false,
+        "n_strokes": 0,
+        "n_minutiae": 0,
+        "file": "cand06_skeleton.json",
+        "ridge_breadth_mm": 0.704,
+        "ridge_breadth_q1_q3": [
+          0.59,
+          0.742
+        ]
+      },
+      "files": [
+        "cand06_mask.png",
+        "cand06_print.png",
+        "cand06_msii.png",
+        "cand06_maskonly.png"
+      ]
+    }
+  },
+  "added": [],
+  "moved": {
+    "1": {
+      "centre": [
+        5.999,
+        40.015,
+        0.849
+      ],
+      "normal": [
+        0.0629,
+        0.9965,
+        0.055
+      ]
+    },
+    "2": {
+      "centre": [
+        -17.548,
+        34.043,
+        1.058
+      ],
+      "normal": [
+        -0.9968,
+        0.0229,
+        0.0761
+      ]
+    },
+    "3": {
+      "centre": [
+        -8.54,
+        1.578,
+        2.793
+      ],
+      "normal": [
+        -0.0613,
+        -0.9548,
+        0.2907
+      ]
+    }
+  }
+}

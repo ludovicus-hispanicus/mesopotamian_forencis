@@ -1,0 +1,263 @@
+{
+  "mesh": {
+    "name": "SM_037321_GMO_r1.00_n4_v256.volume",
+    "vertices": 1717974,
+    "faces": 3435944,
+    "bbox_mm": [
+      35.906,
+      40.703,
+      18.12
+    ],
+    "median_edge_mm": 0.05316,
+    "samples_per_ridge_0.45mm": 8.5,
+    "vertex_properties": [
+      "blue",
+      "feature_vector",
+      "flags",
+      "green",
+      "labelid",
+      "nx",
+      "ny",
+      "nz",
+      "quality",
+      "red"
+    ]
+  },
+  "params": {
+    "patch_radius": 3.0,
+    "stride": 2.0,
+    "grid_spacing": null,
+    "min_grid_spacing": 0.04,
+    "highpass_sigma": 0.8,
+    "normal_cos": 0.3,
+    "min_valid": 0.6,
+    "band": [
+      1.6,
+      3.6
+    ],
+    "msii_radius": 0.3,
+    "periodic_level": 0.5,
+    "threshold": 0.2,
+    "batch": 128
+  },
+  "msii_source": "GigaMesh file, r = 0.3125 mm",
+  "grid_spacing_mm": 0.05315971274511164,
+  "candidates": [
+    {
+      "id": 1,
+      "centre": [
+        8.996,
+        39.917,
+        0.986
+      ],
+      "normal": [
+        -0.0406,
+        0.9936,
+        0.1051
+      ],
+      "score": 0.7828,
+      "mean_score": 0.4092,
+      "n_patches": 12,
+      "area_mm2": 48.0,
+      "ridge_period_mm": 0.5339,
+      "straightness": 0.769,
+      "measurements": {
+        "ridge_frequency_per_mm": 1.9165,
+        "mean_ridge_breadth_mm": 0.5218,
+        "ridge_count_per_5mm": 9.58,
+        "ridge_amplitude_um_rms": 11.2,
+        "local_coherence": 0.567,
+        "straightness": 0.431,
+        "area_mm2": 50.2,
+        "isolated": true
+      },
+      "files": {
+        "relief": "cand01_relief.png",
+        "msii": "cand01_msii.png",
+        "enhanced": "cand01_enhanced.png",
+        "print": "cand01_print.png",
+        "mask": "cand01_mask.png"
+      }
+    },
+    {
+      "id": 2,
+      "centre": [
+        -17.275,
+        32.984,
+        3.01
+      ],
+      "normal": [
+        -0.9919,
+        0.0026,
+        0.127
+      ],
+      "score": 0.7424,
+      "mean_score": 0.492,
+      "n_patches": 4,
+      "area_mm2": 16.0,
+      "ridge_period_mm": 0.5556,
+      "straightness": 0.727,
+      "measurements": {
+        "ridge_frequency_per_mm": 1.6846,
+        "mean_ridge_breadth_mm": 0.5936,
+        "ridge_count_per_5mm": 8.42,
+        "ridge_amplitude_um_rms": 21.71,
+        "local_coherence": 0.334,
+        "straightness": 0.538,
+        "area_mm2": 28.6,
+        "isolated": true
+      },
+      "files": {
+        "relief": "cand02_relief.png",
+        "msii": "cand02_msii.png",
+        "enhanced": "cand02_enhanced.png",
+        "print": "cand02_print.png",
+        "mask": "cand02_mask.png"
+      }
+    },
+    {
+      "id": 3,
+      "centre": [
+        -9.063,
+        1.682,
+        3.024
+      ],
+      "normal": [
+        -0.0656,
+        -0.9447,
+        0.3212
+      ],
+      "score": 0.7729,
+      "mean_score": 0.4526,
+      "n_patches": 3,
+      "area_mm2": 12.0,
+      "ridge_period_mm": 0.5423,
+      "straightness": 0.541,
+      "measurements": {
+        "ridge_frequency_per_mm": 1.6861,
+        "mean_ridge_breadth_mm": 0.5931,
+        "ridge_count_per_5mm": 8.43,
+        "ridge_amplitude_um_rms": 5.27,
+        "local_coherence": 0.38,
+        "straightness": 0.405,
+        "area_mm2": 26.9,
+        "isolated": true
+      },
+      "files": {
+        "relief": "cand03_relief.png",
+        "msii": "cand03_msii.png",
+        "enhanced": "cand03_enhanced.png",
+        "print": "cand03_print.png",
+        "mask": "cand03_mask.png"
+      }
+    },
+    {
+      "id": 4,
+      "centre": [
+        -17.499,
+        8.955,
+        -1.028
+      ],
+      "normal": [
+        -0.9991,
+        -0.0029,
+        -0.0419
+      ],
+      "score": 0.3156,
+      "mean_score": 0.269,
+      "n_patches": 2,
+      "area_mm2": 8.0,
+      "ridge_period_mm": 0.5351,
+      "straightness": 0.721,
+      "measurements": {
+        "ridge_frequency_per_mm": 1.882,
+        "mean_ridge_breadth_mm": 0.5313,
+        "ridge_count_per_5mm": 9.41,
+        "ridge_amplitude_um_rms": 7.08,
+        "local_coherence": 0.738,
+        "straightness": 1.0,
+        "area_mm2": 5.5,
+        "isolated": true
+      },
+      "files": {
+        "relief": "cand04_relief.png",
+        "msii": "cand04_msii.png",
+        "enhanced": "cand04_enhanced.png",
+        "print": "cand04_print.png",
+        "mask": "cand04_mask.png"
+      }
+    },
+    {
+      "id": 5,
+      "centre": [
+        -1.015,
+        3.379,
+        6.563
+      ],
+      "normal": [
+        0.0189,
+        -0.6676,
+        0.7442
+      ],
+      "score": 0.3888,
+      "mean_score": 0.3888,
+      "n_patches": 1,
+      "area_mm2": 4.0,
+      "ridge_period_mm": 0.5509,
+      "straightness": 0.48,
+      "measurements": {
+        "ridge_frequency_per_mm": 2.1447,
+        "mean_ridge_breadth_mm": 0.4663,
+        "ridge_count_per_5mm": 10.72,
+        "ridge_amplitude_um_rms": 6.36,
+        "local_coherence": 0.4,
+        "straightness": 0.853,
+        "area_mm2": 24.1,
+        "isolated": true
+      },
+      "files": {
+        "relief": "cand05_relief.png",
+        "msii": "cand05_msii.png",
+        "enhanced": "cand05_enhanced.png",
+        "print": "cand05_print.png",
+        "mask": "cand05_mask.png"
+      }
+    },
+    {
+      "id": 6,
+      "centre": [
+        -13.112,
+        15.108,
+        7.484
+      ],
+      "normal": [
+        -0.2476,
+        0.0189,
+        0.9687
+      ],
+      "score": 0.2139,
+      "mean_score": 0.2139,
+      "n_patches": 1,
+      "area_mm2": 4.0,
+      "ridge_period_mm": 0.5509,
+      "straightness": 0.496,
+      "measurements": {
+        "ridge_frequency_per_mm": 1.6799,
+        "mean_ridge_breadth_mm": 0.5953,
+        "ridge_count_per_5mm": 8.4,
+        "ridge_amplitude_um_rms": 38.78,
+        "local_coherence": 0.466,
+        "straightness": 0.513,
+        "area_mm2": 6.8,
+        "isolated": true
+      },
+      "files": {
+        "relief": "cand06_relief.png",
+        "msii": "cand06_msii.png",
+        "enhanced": "cand06_enhanced.png",
+        "print": "cand06_print.png",
+        "mask": "cand06_mask.png"
+      }
+    }
+  ]
+}

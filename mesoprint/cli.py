@@ -15,6 +15,7 @@ from scipy.spatial import cKDTree
 from .detect import DetectParams, detect
 from .extract import extract_region, save_extraction
 from .mesh import load_ply, save_ply
+from .msii import MSII_RADIUS, file_msii
 from .render import colormap, render_fatcross
 
 
@@ -31,6 +32,16 @@ def _load(path: str, scale: float):
     return mesh
 
 
+def _msii(mesh, args):
+    """Per-vertex MSII from a GigaMesh export, unless ``--compute-msii``; returns
+    ``(values or None, description for the log and JSON)``."""
+    if not args.compute_msii:
+        got = file_msii(mesh, args.msii_radius)
+        if got is not None:
+            return got[0], f"GigaMesh file, r = {got[1]:.4f} mm"
+    return None, f"computed from the mesh, r = {args.msii_radius} mm"
+
+
 def cmd_info(args) -> None:
     mesh = _load(args.mesh, args.scale)
     print(json.dumps(mesh.summary(), indent=2))
@@ -41,10 +52,13 @@ def cmd_detect(args) -> None:
     out = Path(args.out or f"{mesh.name}_fingerprints")
     out.mkdir(parents=True, exist_ok=True)
     normals = mesh.vertex_normals()
-    params = DetectParams(patch_radius=args.radius, stride=args.stride, threshold=args.threshold)
+    params = DetectParams(patch_radius=args.radius, stride=args.stride, threshold=args.threshold,
+                          msii_radius=args.msii_radius)
+    msii, msii_source = _msii(mesh, args)
+    _log(f"MSII: {msii_source}")
 
     t = time.time()
-    det = detect(mesh, params, normals, progress=lambda k, n: _log(f"  patches {k}/{n}"))
+    det = detect(mesh, params, normals, progress=lambda k, n: _log(f"  patches {k}/{n}"), msii=msii)
     _log(f"scored {len(det.patches)} patches in {time.time() - t:.1f}s "
          f"(grid {det.spacing * 1000:.1f} um); {len(det.candidates)} candidate regions")
 
@@ -61,13 +75,14 @@ def cmd_detect(args) -> None:
 
     cands = det.candidates[: args.top]
     summary = {"mesh": mesh.summary(), "params": {**vars(params), "band": list(params.band)},
-               "grid_spacing_mm": det.spacing, "candidates": []}
+               "msii_source": msii_source, "grid_spacing_mm": det.spacing, "candidates": []}
     tree = cKDTree(mesh.vertices)
     for i, c in enumerate(cands, 1):
         entry = {"id": i, **c.as_dict()}
         if not args.no_extract:
             try:
-                ex = extract_region(mesh, c.centre, args.extract_radius, 25.4 / args.ppi, normals, tree)
+                ex = extract_region(mesh, c.centre, args.extract_radius, 25.4 / args.ppi, normals, tree,
+                                    msii_radius=args.msii_radius, msii_values=msii)
                 meta = save_extraction(ex, out / "candidates", f"cand{i:02d}", {"candidate": entry})
                 entry["measurements"] = meta["measurements"]
                 entry["files"] = meta["files"]
@@ -78,20 +93,25 @@ def cmd_detect(args) -> None:
              f"at {np.round(c.centre, 2).tolist()}")
     (out / "candidates.json").write_text(json.dumps(summary, indent=2))
 
+    # heat map colours: faint from half the threshold, full at twice the threshold
+    lo, hi = 0.5 * params.threshold, 2.0 * params.threshold
     if not args.no_render:
         markers = [(f"#{i}", c.centre, c.normal) for i, c in enumerate(cands, 1)]
-        render_fatcross(mesh.vertices, normals, det.vertex_score, out / "overview.png",
-                        px_mm=args.render_px, markers=markers, title=f"{mesh.name}: fingerprint score")
+        render_fatcross(mesh.vertices, normals, det.vertex_score, out / "overview.png", px_mm=args.render_px,
+                        lo=lo, hi=hi, markers=markers, title=f"{mesh.name}: fingerprint score")
     if args.heatmap_ply:
         s = det.vertex_score
-        rgb = colormap((s - 0.05) / 0.3).astype(np.uint8)
+        rgb = colormap((s - lo) / (hi - lo)).astype(np.uint8)
         save_ply(out / f"{mesh.name}_score.ply", mesh, {"quality": s.astype(np.float32)}, rgb)
     _log(f"results in {out}/")
 
 
 def cmd_extract(args) -> None:
     mesh = _load(args.mesh, args.scale)
-    ex = extract_region(mesh, args.centre, args.radius, 25.4 / args.ppi)
+    msii, msii_source = _msii(mesh, args)
+    _log(f"MSII: {msii_source}")
+    ex = extract_region(mesh, args.centre, args.radius, 25.4 / args.ppi, msii_radius=args.msii_radius,
+                        msii_values=msii)
     meta = save_extraction(ex, args.out, args.name or f"{mesh.name}_region")
     print(json.dumps(meta["measurements"], indent=2))
 
@@ -105,9 +125,21 @@ def cmd_synth(args) -> None:
     _log(f"wrote {args.out} ({mesh.n_vertices:,} vertices) and ground truth")
 
 
+def cmd_review(args) -> None:
+    try:
+        from .review import serve
+    except ImportError as e:  # flask is optional
+        raise SystemExit(f"{e}\nthe review app needs Flask: pip install flask") from e
+    serve(args.results, args.assets, args.port, not args.no_browser)
+
+
 def main(argv=None) -> None:
     p = argparse.ArgumentParser(prog="mesoprint", description="Detect and extract fingerprints on 3D scans of clay objects.")
     p.add_argument("--scale", type=float, default=1.0, help="multiply coordinates to get millimetres")
+    p.add_argument("--msii-radius", type=float, default=MSII_RADIUS,
+                   help="ball radius of the ridge-scale MSII map, mm (about half the ridge period)")
+    p.add_argument("--compute-msii", action="store_true",
+                   help="compute MSII even if the mesh is a GigaMesh MSII export (*_r0.30_n4_v256.volume.ply)")
     sub = p.add_subparsers(dest="cmd", required=True)
 
     s = sub.add_parser("info", help="print mesh size and resolution")
@@ -119,9 +151,9 @@ def main(argv=None) -> None:
     s.add_argument("-o", "--out")
     s.add_argument("--radius", type=float, default=3.0, help="patch radius, mm")
     s.add_argument("--stride", type=float, default=2.0, help="distance between patch centres, mm")
-    s.add_argument("--threshold", type=float, default=0.10)
+    s.add_argument("--threshold", type=float, default=DetectParams.threshold)
     s.add_argument("--top", type=int, default=10, help="candidates to report/extract")
-    s.add_argument("--extract-radius", type=float, default=6.0)
+    s.add_argument("--extract-radius", type=float, default=8.0)
     s.add_argument("--ppi", type=float, default=1000.0)
     s.add_argument("--render-px", type=float, default=0.1, help="overview pixel size, mm")
     s.add_argument("--no-extract", action="store_true")
@@ -132,7 +164,7 @@ def main(argv=None) -> None:
     s = sub.add_parser("extract", help="extract one region given its centre")
     s.add_argument("mesh")
     s.add_argument("--centre", type=float, nargs=3, required=True, metavar=("X", "Y", "Z"))
-    s.add_argument("--radius", type=float, default=6.0)
+    s.add_argument("--radius", type=float, default=8.0)
     s.add_argument("--ppi", type=float, default=1000.0)
     s.add_argument("-o", "--out", default=".")
     s.add_argument("--name")
@@ -143,6 +175,13 @@ def main(argv=None) -> None:
     s.add_argument("--seed", type=int, default=0)
     s.add_argument("--spacing", type=float, default=0.04)
     s.set_defaults(func=cmd_synth)
+
+    s = sub.add_parser("review", help="open the local review app for a results folder")
+    s.add_argument("--results", default="results/batch_r100", help="folder with SM_<id>/candidates.json")
+    s.add_argument("--assets", default="assets/3D-Models", help="folder with the meshes")
+    s.add_argument("--port", type=int, default=8765)
+    s.add_argument("--no-browser", action="store_true")
+    s.set_defaults(func=cmd_review)
 
     args = p.parse_args(argv)
     args.func(args)

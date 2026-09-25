@@ -1,0 +1,78 @@
+{
+  "candidates": {
+    "1": {
+      "verdict": "print",
+      "reason": "",
+      "note": "",
+      "reviewer": "Luis",
+      "time": "2026-09-25 12:20",
+      "centre": [
+        18.77,
+        6.46,
+        -2.054
+      ],
+      "params": {
+        "radius_mm": 5.0,
+        "mask_level": 0.45
+      },
+      "measurements": {
+        "mean_ridge_breadth_mm": 0.564,
+        "ridge_count_per_5mm": 8.9,
+        "ridge_amplitude_um_rms": 12.4,
+        "straightness": 0.46,
+        "area_mm2": 55.9,
+        "isolated": true
+      },
+      "manual": {
+        "lines": [
+          {
+            "kind": "ridge",
+            "x0": 157.22682223349247,
+            "y0": 131.25542886826685,
+            "x1": 209.5353389666653,
+            "y1": 281.12814535095305,
+            "length_mm": 4.032,
+            "peaks": [
+              0,
+              0.1393,
+              0.274,
+              0.4151,
+              0.5535,
+              0.719,
+              0.8679,
+              1
+            ],
+            "drawn_mm": 4.032,
+            "n_ridges": 7
+          }
+        ],
+        "n_ridges": 7,
+        "length_mm": 4.032,
+        "mean_ridge_breadth_mm": 0.576,
+        "n_lines": 1,
+        "rulers_mm": []
+      },
+      "files": [
+        "cand01_mask.png",
+        "cand01_print.png",
+        "cand01_msii.png",
+        "cand01_maskonly.png"
+      ]
+    }
+  },
+  "added": [],
+  "moved": {
+    "1": {
+      "centre": [
+        18.77,
+        6.46,
+        -2.054
+      ],
+      "normal": [
+        0.9951,
+        0.0031,
+        -0.0992
+      ]
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "mesh": {
+    "name": "SM_036390_GMO_r1.00_n4_v256.volume",
+    "vertices": 3117255,
+    "faces": 6234506,
+    "bbox_mm": [
+      40.425,
+      69.206,
+      22.117
+    ],
+    "median_edge_mm": 0.05315,
+    "samples_per_ridge_0.45mm": 8.5,
+    "vertex_properties": [
+      "blue",
+      "feature_vector",
+      "flags",
+      "green",
+      "labelid",
+      "nx",
+      "ny",
+      "nz",
+      "quality",
+      "red"
+    ]
+  },
+  "params": {
+    "patch_radius": 3.0,
+    "stride": 2.0,
+    "grid_spacing": null,
+    "min_grid_spacing": 0.04,
+    "highpass_sigma": 0.8,
+    "normal_cos": 0.3,
+    "min_valid": 0.6,
+    "band": [
+      1.6,
+      3.6
+    ],
+    "msii_radius": 0.3,
+    "periodic_level": 0.5,
+    "threshold": 0.2,
+    "batch": 128
+  },
+  "msii_source": "GigaMesh file, r = 0.3125 mm",
+  "grid_spacing_mm": 0.05314807739082554,
+  "candidates": []
+}

@@ -7,9 +7,9 @@ The tool works directly on the mesh (PLY exported from GigaMesh or any scanner).
 does not use 2D renderings, so depth is measured in real units (µm) and ridge spacing
 in millimetres.
 
-> **Status:** v0.1 has been validated only on synthetic tablets. It has not yet been
-> run on the Sulaymaniyah scans, and scores and thresholds will need recalibrating on
-> them.
+> **Status:** validated on synthetic tablets and on one real scan, SM 036475, where it
+> finds the known print (right side, bottom) blind as the only candidate. Thresholds
+> still need checking on the other tablets, especially those with scanner waves.
 >
 > Full project report (data, method, development log, validation, next steps):
 > [docs/REPORT.md](docs/REPORT.md). Change log: [CHANGELOG.md](CHANGELOG.md).
@@ -42,17 +42,25 @@ in millimetres.
      artifacts.
    - `peak_freq`: ridge frequency, measured after removing the clay's power-law
      background spectrum.
-4. **Score.** `band_ratio × local_coherence × coverage × amplitude factor ×
-   straightness penalty`. This is a hand-tuned starting point, meant to be replaced by
-   a classifier trained on labelled tablets.
+4. **Score.** Each patch is turned into an MSII map (`mesoprint/msii.py`: the share
+   of a 0.3 mm ball inside the clay, as in GigaMesh), which brings out the ridges. At
+   every pixel the map is compared with itself shifted across the ridges
+   (`mesoprint/periodicity.py`): a print repeats one ridge period away and inverts
+   half a period away; cracks, rulings, wedges and clay grain do not. The score is
+   the share of the patch covered by such periodic ridges × a straightness penalty
+   (all-parallel ridges look like scanner stripes). Calibrated on one real print
+   (SM 036475); the v0.1 band-energy score is still in `patches.csv` as `band_score`.
 5. **Candidates.** Neighbouring patches above the threshold are grouped and ranked.
    Scores are also interpolated back onto the vertices as a heat map.
-6. **Extraction.** For each candidate, a 12 mm disk is flattened and resampled to
-   1000 ppi (DPI stored in the PNG). It is written as:
+6. **Extraction.** For each candidate, a 16 mm disk is flattened and resampled to
+   1000 ppi (DPI stored in the PNG). The print is isolated with a mask of the
+   connected periodic area, bridged across cracks. It is written as:
    - `*_relief.png`: the surface as seen on the tablet (light = high).
-   - `*_enhanced.png`: ridge-band filtered, contrast-normalised.
-   - `*_print.png`: the enhanced image mirrored, so it reads like an ink print of the
-     finger (clay grooves = finger ridges, shown dark).
+   - `*_msii.png`: the MSII map, shaded like the relief (dark = groove in the clay).
+   - `*_enhanced.png`: ridge band of the MSII map, contrast-normalised.
+   - `*_print.png`: the enhanced image cut to the mask and mirrored, so it reads like
+     an ink print of the finger (clay grooves = finger ridges, shown dark).
+   - `*_mask.png`: the relief with the isolated print outlined.
    - `*.json`: frame, pixel size and measurements: ridge frequency, mean ridge
      breadth (ridge + furrow, as used for age and sex estimation in the Tel Burna
      study), ridge count per 5 mm, and ridge depth.
@@ -66,7 +74,31 @@ mesoprint info SM_039043_GMOCF.ply          # size, resolution, samples per ridg
 mesoprint detect SM_039043_GMOCF.ply -o out/ --heatmap-ply
 mesoprint extract SM_039043_GMOCF.ply --centre 12.3 -4.1 8.0 --radius 6 -o out/
 mesoprint synth test.ply                    # synthetic tablet + ground truth JSON
+
+# GigaMesh MSII exports are used directly (the MSII component nearest 0.3 mm):
+mesoprint detect SM_036475_GMO_r0.30_n4_v256.volume.ply -o results/SM_036475_msii_r030
+
+python scripts/run_batch.py                 # every MSII export in assets/3D-Models -> results/batch_r100
+mesoprint review                            # local review app (pip install flask), opens the browser
+python scripts/collect_reviews.py           # verdicts -> results/batch_r100/reviews.csv
 ```
+
+## Review app
+
+`mesoprint review` runs on this PC only; nothing is uploaded. Left panel: tablet
+and candidate list, overview options, extraction radius and mask level, mask
+tools, measurements and the verdict. Right: the fat-cross overview (shaded
+surface or MSII, score heat map on/off; click a marker to select, or "Add missed
+print" and click where it is) and the candidate editor (MSII / relief / enhanced
+layer with the print mask; paint or erase, grow or shrink, re-extract at a larger
+radius). "Ridge line" draws a line across the ridges and counts them for a manual
+mean ridge breadth, as in Fowler et al. 2020: drag from one groove centre to
+another, the grooves between get dots that can be corrected; several lines and
+rulers are kept. The *Ridges* section shows the ridge skeleton (from the Gabor
+enhancement) with minutiae; *Trace* strokes either guide the enhancement or are
+kept as traced ridges. Verdicts (fingerprint / not a print with a reason / unsure),
+edited masks, measurements, strokes and skeletons are saved to
+`results/<batch>/SM_<id>/review.json` and `review/`.
 
 `detect` writes:
 - `overview.png`: fat-cross views with the score heat map and numbered candidates.
@@ -83,7 +115,7 @@ PLY is git-ignored, like all `*.ply` files except cropped test regions under
 Coordinates are taken to be millimetres; use `--scale` otherwise. The overview
 assumes GigaMesh orientation (obverse facing +Z, X right, Y up).
 
-Runtime: about 45 s for a 2.6 M-vertex mesh on 4 cores.
+Runtime: about 2 min for a 2.3 M-vertex mesh (SM 036475).
 
 ## Validation so far (synthetic)
 

@@ -1,0 +1,64 @@
+{
+  "ppi": 1000.0,
+  "mm_per_pixel": 0.0254,
+  "radius_mm": 8.0,
+  "frame": {
+    "origin": [
+      -24.04066276550293,
+      51.00258255004883,
+      2.2788586616516113
+    ],
+    "u": [
+      -0.054555123393144125,
+      -0.9735745466537853,
+      -0.22175739135243122
+    ],
+    "v": [
+      0.19140797494880082,
+      -0.22816616737387516,
+      0.954622012731697
+    ],
+    "n": [
+      -0.9799932273426987,
+      0.009633388489691752,
+      0.19879756585192038
+    ]
+  },
+  "image_axes": "columns = +u, rows = +v (up); 'print' is mirrored left-right and cut to the mask",
+  "measurements": {
+    "ridge_frequency_per_mm": 1.7032,
+    "mean_ridge_breadth_mm": 0.5871,
+    "ridge_count_per_5mm": 8.52,
+    "ridge_amplitude_um_rms": 3.93,
+    "local_coherence": 0.741,
+    "straightness": 0.94,
+    "area_mm2": 49.8,
+    "isolated": true
+  },
+  "files": {
+    "relief": "cand02_relief.png",
+    "msii": "cand02_msii.png",
+    "enhanced": "cand02_enhanced.png",
+    "print": "cand02_print.png",
+    "mask": "cand02_mask.png"
+  },
+  "candidate": {
+    "id": 2,
+    "centre": [
+      -24.041,
+      51.003,
+      2.279
+    ],
+    "normal": [
+      -0.9744,
+      0.0056,
+      0.2247
+    ],
+    "score": 0.981,
+    "mean_score": 0.9142,
+    "n_patches": 2,
+    "area_mm2": 8.0,
+    "ridge_period_mm": 0.5901,
+    "straightness": 0.939
+  }
+}

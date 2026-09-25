@@ -1,0 +1,256 @@
+[
+ {
+  "a": "SM036475_right_1",
+  "b": "SM037316_left_1",
+  "score": 0.4575,
+  "rotation_deg": 176.0,
+  "shift_px": [
+   13,
+   55
+  ],
+  "overlap_mm2": 20.9
+ },
+ {
+  "a": "SM036475_right_1",
+  "b": "SM037321_bottom_1",
+  "score": 0.6768,
+  "rotation_deg": 44.0,
+  "shift_px": [
+   27,
+   73
+  ],
+  "overlap_mm2": 12.0
+ },
+ {
+  "a": "SM036475_right_1",
+  "b": "SM037321_left_1",
+  "score": -1.0,
+  "rotation_deg": null,
+  "shift_px": null,
+  "overlap_mm2": null
+ },
+ {
+  "a": "SM036475_right_1",
+  "b": "SM037321_left_2",
+  "score": -1.0,
+  "rotation_deg": null,
+  "shift_px": null,
+  "overlap_mm2": null
+ },
+ {
+  "a": "SM036475_right_1",
+  "b": "SM037321_obverse_1",
+  "score": 0.7197,
+  "rotation_deg": 20.0,
+  "shift_px": [
+   25,
+   43
+  ],
+  "overlap_mm2": 8.1
+ },
+ {
+  "a": "SM036475_right_1",
+  "b": "SM037321_obverse_2",
+  "score": -1.0,
+  "rotation_deg": null,
+  "shift_px": null,
+  "overlap_mm2": null
+ },
+ {
+  "a": "SM036475_right_1",
+  "b": "SM037321_top_1",
+  "score": 0.4265,
+  "rotation_deg": 72.0,
+  "shift_px": [
+   383,
+   454
+  ],
+  "overlap_mm2": 24.4
+ },
+ {
+  "a": "SM037316_left_1",
+  "b": "SM037321_bottom_1",
+  "score": 0.6447,
+  "rotation_deg": 84.0,
+  "shift_px": [
+   83,
+   348
+  ],
+  "overlap_mm2": 11.4
+ },
+ {
+  "a": "SM037316_left_1",
+  "b": "SM037321_left_1",
+  "score": -1.0,
+  "rotation_deg": null,
+  "shift_px": null,
+  "overlap_mm2": null
+ },
+ {
+  "a": "SM037316_left_1",
+  "b": "SM037321_left_2",
+  "score": -1.0,
+  "rotation_deg": null,
+  "shift_px": null,
+  "overlap_mm2": null
+ },
+ {
+  "a": "SM037316_left_1",
+  "b": "SM037321_obverse_1",
+  "score": 0.6579,
+  "rotation_deg": 204.0,
+  "shift_px": [
+   387,
+   85
+  ],
+  "overlap_mm2": 8.1
+ },
+ {
+  "a": "SM037316_left_1",
+  "b": "SM037321_obverse_2",
+  "score": -1.0,
+  "rotation_deg": null,
+  "shift_px": null,
+  "overlap_mm2": null
+ },
+ {
+  "a": "SM037316_left_1",
+  "b": "SM037321_top_1",
+  "score": 0.7032,
+  "rotation_deg": 264.0,
+  "shift_px": [
+   53,
+   495
+  ],
+  "overlap_mm2": 22.1
+ },
+ {
+  "a": "SM037321_bottom_1",
+  "b": "SM037321_left_1",
+  "score": -1.0,
+  "rotation_deg": null,
+  "shift_px": null,
+  "overlap_mm2": null
+ },
+ {
+  "a": "SM037321_bottom_1",
+  "b": "SM037321_left_2",
+  "score": -1.0,
+  "rotation_deg": null,
+  "shift_px": null,
+  "overlap_mm2": null
+ },
+ {
+  "a": "SM037321_bottom_1",
+  "b": "SM037321_obverse_1",
+  "score": 0.5842,
+  "rotation_deg": 328.0,
+  "shift_px": [
+   329,
+   330
+  ],
+  "overlap_mm2": 8.5
+ },
+ {
+  "a": "SM037321_bottom_1",
+  "b": "SM037321_obverse_2",
+  "score": -1.0,
+  "rotation_deg": null,
+  "shift_px": null,
+  "overlap_mm2": null
+ },
+ {
+  "a": "SM037321_bottom_1",
+  "b": "SM037321_top_1",
+  "score": 0.6585,
+  "rotation_deg": 172.0,
+  "shift_px": [
+   477,
+   465
+  ],
+  "overlap_mm2": 14.6
+ },
+ {
+  "a": "SM037321_left_1",
+  "b": "SM037321_left_2",
+  "score": -1.0,
+  "rotation_deg": null,
+  "shift_px": null,
+  "overlap_mm2": null
+ },
+ {
+  "a": "SM037321_left_1",
+  "b": "SM037321_obverse_1",
+  "score": -1.0,
+  "rotation_deg": null,
+  "shift_px": null,
+  "overlap_mm2": null
+ },
+ {
+  "a": "SM037321_left_1",
+  "b": "SM037321_obverse_2",
+  "score": -1.0,
+  "rotation_deg": null,
+  "shift_px": null,
+  "overlap_mm2": null
+ },
+ {
+  "a": "SM037321_left_1",
+  "b": "SM037321_top_1",
+  "score": -1.0,
+  "rotation_deg": null,
+  "shift_px": null,
+  "overlap_mm2": null
+ },
+ {
+  "a": "SM037321_left_2",
+  "b": "SM037321_obverse_1",
+  "score": -1.0,
+  "rotation_deg": null,
+  "shift_px": null,
+  "overlap_mm2": null
+ },
+ {
+  "a": "SM037321_left_2",
+  "b": "SM037321_obverse_2",
+  "score": -1.0,
+  "rotation_deg": null,
+  "shift_px": null,
+  "overlap_mm2": null
+ },
+ {
+  "a": "SM037321_left_2",
+  "b": "SM037321_top_1",
+  "score": -1.0,
+  "rotation_deg": null,
+  "shift_px": null,
+  "overlap_mm2": null
+ },
+ {
+  "a": "SM037321_obverse_1",
+  "b": "SM037321_obverse_2",
+  "score": -1.0,
+  "rotation_deg": null,
+  "shift_px": null,
+  "overlap_mm2": null
+ },
+ {
+  "a": "SM037321_obverse_1",
+  "b": "SM037321_top_1",
+  "score": 0.7529,
+  "rotation_deg": 216.0,
+  "shift_px": [
+   506,
+   473
+  ],
+  "overlap_mm2": 8.1
+ },
+ {
+  "a": "SM037321_obverse_2",
+  "b": "SM037321_top_1",
+  "score": -1.0,
+  "rotation_deg": null,
+  "shift_px": null,
+  "overlap_mm2": null
+ }
+]

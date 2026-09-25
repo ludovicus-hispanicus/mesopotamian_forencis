@@ -1,0 +1,22 @@
+tablet,catalogue,note,candidates,msii,c1_score,c1_patches,c1_face,c1_centre,c1_breadth_mm,c1_area_mm2,c2_score,c2_patches,c2_face,c2_centre,c2_breadth_mm,c2_area_mm2,c3_score,c3_patches,c3_face,c3_centre,c3_breadth_mm,c3_area_mm2
+SM 036359,maybe,,10,"GigaMesh file, r = 0.3125 mm",0.8783,3,reverse,-1.0 43.1 -12.8,0.5097,76.3,0.981,2,left,-24.0 51.0 2.3,0.5871,49.8,0.4142,5,reverse,-6.8 50.7 -12.1,0.5098,88.5
+SM 036390,maybe,,0,"GigaMesh file, r = 0.3125 mm",,,,,,,,,,,,,,,,,,
+SM 036413,maybe,,2,"GigaMesh file, r = 0.3125 mm",0.4623,2,reverse,-7.0 51.1 -10.5,0.6033,34.2,0.4236,2,reverse,8.0 51.9 -8.0,0.5881,14.1,,,,,,
+SM 036425,maybe,ink label,0,"GigaMesh file, r = 0.3125 mm",,,,,,,,,,,,,,,,,,
+SM 036475,yes,,1,"GigaMesh file, r = 0.3125 mm",0.6647,3,right,18.3 7.0 -5.0,0.6033,35.9,,,,,,,,,,,,
+SM 036506,maybe,,4,"GigaMesh file, r = 0.3125 mm",0.7046,1,obverse,8.9 11.1 10.9,0.5602,7.6,0.2459,2,bottom,5.0 0.7 1.0,0.6164,41.0,0.2802,1,obverse,20.5 15.2 8.2,0.4952,191.8
+SM 036917,yes,,0,"GigaMesh file, r = 0.3125 mm",,,,,,,,,,,,,,,,,,
+SM 037244,,scanner waves,4,"GigaMesh file, r = 0.3125 mm",0.385,4,left,-22.2 55.1 1.1,0.3182,197.4,0.4235,2,left,-22.0 16.1 2.0,0.4808,60.3,0.2643,1,left,-21.5 21.0 3.0,0.4824,66.9
+SM 037316,yes,,4,"GigaMesh file, r = 0.3125 mm",0.8244,7,left,-23.0 59.0 3.0,0.6141,57.5,0.2691,1,left,-23.1 49.0 3.0,0.6164,31.2,0.2356,1,bottom,-9.0 0.8 -5.0,0.479,28.3
+SM 037318,,ink label,0,"GigaMesh file, r = 0.3125 mm",,,,,,,,,,,,,,,,,,
+SM 037319,yes,remarks only,1,"GigaMesh file, r = 0.3125 mm",0.3189,1,bottom,-9.0 1.4 1.0,0.4446,10.7,,,,,,,,,,,,
+SM 037321,yes,,6,"GigaMesh file, r = 0.3125 mm",0.7828,12,top,9.0 39.9 1.0,0.5218,50.2,0.7424,4,left,-17.3 33.0 3.0,0.5936,28.6,0.7729,3,bottom,-9.1 1.7 3.0,0.5931,26.9
+SM 037323,,ink label,1,"GigaMesh file, r = 0.3125 mm",0.2037,1,bottom,-3.0 2.4 5.5,0.6131,10.8,,,,,,,,,,,,
+SM 037324,yes,,1,"GigaMesh file, r = 0.3125 mm",0.2537,1,bottom,3.1 0.6 1.0,0.5387,60.1,,,,,,,,,,,,
+SM 037326,yes,,4,"GigaMesh file, r = 0.3125 mm",0.8301,11,bottom,13.0 1.5 3.0,0.5841,47.2,0.3402,2,reverse,-16.2 27.0 -6.1,0.5213,18.1,0.2617,1,top,7.0 38.7 -1.1,0.5936,6.8
+SM 037377,yes,,10,"GigaMesh file, r = 0.3125 mm",0.669,3,reverse,-7.0 29.1 -10.5,0.538,115.6,0.5581,3,reverse,-7.0 69.1 -7.6,0.5078,93.7,0.4637,1,reverse,-9.0 41.0 -11.0,0.5254,69.1
+SM 037717,yes,,6,"GigaMesh file, r = 0.3125 mm",0.9219,6,top,-19.0 72.8 1.0,0.4963,7.4,0.5378,8,left,-22.9 47.0 3.0,0.4664,45.1,0.2422,3,left,-23.3 9.0 7.2,0.3878,159.3
+SM 039043,yes,"scanner waves, seal",2,"GigaMesh file, r = 0.3125 mm",0.6384,5,obverse,-19.8 6.6 1.7,0.5463,32.1,0.2785,1,obverse,-19.5 12.9 3.7,0.5471,31.1,,,,,,
+SM 039941,yes,,7,"GigaMesh file, r = 0.3125 mm",0.4118,3,bottom,11.0 3.2 -2.8,0.5429,28.8,0.4812,2,reverse,16.1 48.3 -2.1,0.4466,23.3,0.4743,2,obverse,-4.9 1.6 4.3,0.5526,6.0
+SM 043643,yes,,0,"GigaMesh file, r = 0.3125 mm",,,,,,,,,,,,,,,,,,
+SM 043644,yes,,1,"GigaMesh file, r = 0.3125 mm",0.4625,2,top,15.0 61.9 -2.9,0.6058,25.3,,,,,,,,,,,,

@@ -1,0 +1,407 @@
+{
+  "mesh": {
+    "name": "SM_037377_GMO_r1.00_n4_v256.volume",
+    "vertices": 3492556,
+    "faces": 6985108,
+    "bbox_mm": [
+      52.873,
+      73.917,
+      23.32
+    ],
+    "median_edge_mm": 0.05515,
+    "samples_per_ridge_0.45mm": 8.2,
+    "vertex_properties": [
+      "blue",
+      "feature_vector",
+      "flags",
+      "green",
+      "labelid",
+      "nx",
+      "ny",
+      "nz",
+      "quality",
+      "red"
+    ]
+  },
+  "params": {
+    "patch_radius": 3.0,
+    "stride": 2.0,
+    "grid_spacing": null,
+    "min_grid_spacing": 0.04,
+    "highpass_sigma": 0.8,
+    "normal_cos": 0.3,
+    "min_valid": 0.6,
+    "band": [
+      1.6,
+      3.6
+    ],
+    "msii_radius": 0.3,
+    "periodic_level": 0.5,
+    "threshold": 0.2,
+    "batch": 128
+  },
+  "msii_source": "GigaMesh file, r = 0.3125 mm",
+  "grid_spacing_mm": 0.05515311551046666,
+  "candidates": [
+    {
+      "id": 1,
+      "centre": [
+        -6.964,
+        29.092,
+        -10.467
+      ],
+      "normal": [
+        -0.0799,
+        -0.0492,
+        -0.9956
+      ],
+      "score": 0.669,
+      "mean_score": 0.4994,
+      "n_patches": 3,
+      "area_mm2": 12.0,
+      "ridge_period_mm": 0.5547,
+      "straightness": 0.515,
+      "measurements": {
+        "ridge_frequency_per_mm": 1.8588,
+        "mean_ridge_breadth_mm": 0.538,
+        "ridge_count_per_5mm": 9.29,
+        "ridge_amplitude_um_rms": 3.26,
+        "local_coherence": 0.335,
+        "straightness": 0.332,
+        "area_mm2": 115.6,
+        "isolated": true
+      },
+      "files": {
+        "relief": "cand01_relief.png",
+        "msii": "cand01_msii.png",
+        "enhanced": "cand01_enhanced.png",
+        "print": "cand01_print.png",
+        "mask": "cand01_mask.png"
+      }
+    },
+    {
+      "id": 2,
+      "centre": [
+        -6.967,
+        69.148,
+        -7.561
+      ],
+      "normal": [
+        -0.0598,
+        0.4151,
+        -0.9078
+      ],
+      "score": 0.5581,
+      "mean_score": 0.4199,
+      "n_patches": 3,
+      "area_mm2": 12.0,
+      "ridge_period_mm": 0.5142,
+      "straightness": 0.385,
+      "measurements": {
+        "ridge_frequency_per_mm": 1.9692,
+        "mean_ridge_breadth_mm": 0.5078,
+        "ridge_count_per_5mm": 9.85,
+        "ridge_amplitude_um_rms": 4.4,
+        "local_coherence": 0.447,
+        "straightness": 0.568,
+        "area_mm2": 93.7,
+        "isolated": true
+      },
+      "files": {
+        "relief": "cand02_relief.png",
+        "msii": "cand02_msii.png",
+        "enhanced": "cand02_enhanced.png",
+        "print": "cand02_print.png",
+        "mask": "cand02_mask.png"
+      }
+    },
+    {
+      "id": 3,
+      "centre": [
+        -9.047,
+        40.963,
+        -10.97
+      ],
+      "normal": [
+        -0.154,
+        -0.0515,
+        -0.9867
+      ],
+      "score": 0.4637,
+      "mean_score": 0.4637,
+      "n_patches": 1,
+      "area_mm2": 4.0,
+      "ridge_period_mm": 0.5253,
+      "straightness": 0.447,
+      "measurements": {
+        "ridge_frequency_per_mm": 1.9032,
+        "mean_ridge_breadth_mm": 0.5254,
+        "ridge_count_per_5mm": 9.52,
+        "ridge_amplitude_um_rms": 3.07,
+        "local_coherence": 0.399,
+        "straightness": 0.813,
+        "area_mm2": 69.1,
+        "isolated": true
+      },
+      "files": {
+        "relief": "cand03_relief.png",
+        "msii": "cand03_msii.png",
+        "enhanced": "cand03_enhanced.png",
+        "print": "cand03_print.png",
+        "mask": "cand03_mask.png"
+      }
+    },
+    {
+      "id": 4,
+      "centre": [
+        11.048,
+        28.917,
+        -10.915
+      ],
+      "normal": [
+        0.0722,
+        -0.0931,
+        -0.993
+      ],
+      "score": 0.4616,
+      "mean_score": 0.4616,
+      "n_patches": 1,
+      "area_mm2": 4.0,
+      "ridge_period_mm": 0.5342,
+      "straightness": 0.782,
+      "measurements": {
+        "ridge_frequency_per_mm": 1.9117,
+        "mean_ridge_breadth_mm": 0.5231,
+        "ridge_count_per_5mm": 9.56,
+        "ridge_amplitude_um_rms": 5.59,
+        "local_coherence": 0.533,
+        "straightness": 0.677,
+        "area_mm2": 42.6,
+        "isolated": true
+      },
+      "files": {
+        "relief": "cand04_relief.png",
+        "msii": "cand04_msii.png",
+        "enhanced": "cand04_enhanced.png",
+        "print": "cand04_print.png",
+        "mask": "cand04_mask.png"
+      }
+    },
+    {
+      "id": 5,
+      "centre": [
+        21.238,
+        42.981,
+        -7.527
+      ],
+      "normal": [
+        0.5229,
+        0.0475,
+        -0.851
+      ],
+      "score": 0.267,
+      "mean_score": 0.2558,
+      "n_patches": 2,
+      "area_mm2": 8.0,
+      "ridge_period_mm": 0.4992,
+      "straightness": 0.398,
+      "measurements": {
+        "ridge_frequency_per_mm": 1.9016,
+        "mean_ridge_breadth_mm": 0.5259,
+        "ridge_count_per_5mm": 9.51,
+        "ridge_amplitude_um_rms": 4.99,
+        "local_coherence": 0.33,
+        "straightness": 0.361,
+        "area_mm2": 71.3,
+        "isolated": true
+      },
+      "files": {
+        "relief": "cand05_relief.png",
+        "msii": "cand05_msii.png",
+        "enhanced": "cand05_enhanced.png",
+        "print": "cand05_print.png",
+        "mask": "cand05_mask.png"
+      }
+    },
+    {
+      "id": 6,
+      "centre": [
+        6.235,
+        56.633,
+        -10.069
+      ],
+      "normal": [
+        0.1492,
+        0.0768,
+        -0.9858
+      ],
+      "score": 0.2892,
+      "mean_score": 0.2892,
+      "n_patches": 1,
+      "area_mm2": 4.0,
+      "ridge_period_mm": 0.5278,
+      "straightness": 0.584,
+      "measurements": {
+        "ridge_frequency_per_mm": 1.8954,
+        "mean_ridge_breadth_mm": 0.5276,
+        "ridge_count_per_5mm": 9.48,
+        "ridge_amplitude_um_rms": 4.15,
+        "local_coherence": 0.545,
+        "straightness": 0.447,
+        "area_mm2": 40.8,
+        "isolated": true
+      },
+      "files": {
+        "relief": "cand06_relief.png",
+        "msii": "cand06_msii.png",
+        "enhanced": "cand06_enhanced.png",
+        "print": "cand06_print.png",
+        "mask": "cand06_mask.png"
+      }
+    },
+    {
+      "id": 7,
+      "centre": [
+        2.429,
+        72.036,
+        -4.067
+      ],
+      "normal": [
+        0.0215,
+        0.9187,
+        -0.3944
+      ],
+      "score": 0.2376,
+      "mean_score": 0.2376,
+      "n_patches": 1,
+      "area_mm2": 4.0,
+      "ridge_period_mm": 0.5133,
+      "straightness": 0.814,
+      "measurements": {
+        "ridge_frequency_per_mm": 1.967,
+        "mean_ridge_breadth_mm": 0.5084,
+        "ridge_count_per_5mm": 9.84,
+        "ridge_amplitude_um_rms": 5.14,
+        "local_coherence": 0.366,
+        "straightness": 0.605,
+        "area_mm2": 29.0,
+        "isolated": true
+      },
+      "files": {
+        "relief": "cand07_relief.png",
+        "msii": "cand07_msii.png",
+        "enhanced": "cand07_enhanced.png",
+        "print": "cand07_print.png",
+        "mask": "cand07_mask.png"
+      }
+    },
+    {
+      "id": 8,
+      "centre": [
+        -8.808,
+        44.982,
+        -10.971
+      ],
+      "normal": [
+        -0.134,
+        0.039,
+        -0.9902
+      ],
+      "score": 0.2224,
+      "mean_score": 0.2224,
+      "n_patches": 1,
+      "area_mm2": 4.0,
+      "ridge_period_mm": 0.5367,
+      "straightness": 0.617,
+      "measurements": {
+        "ridge_frequency_per_mm": 1.9061,
+        "mean_ridge_breadth_mm": 0.5246,
+        "ridge_count_per_5mm": 9.53,
+        "ridge_amplitude_um_rms": 2.88,
+        "local_coherence": 0.446,
+        "straightness": 0.794,
+        "area_mm2": 52.0,
+        "isolated": true
+      },
+      "files": {
+        "relief": "cand08_relief.png",
+        "msii": "cand08_msii.png",
+        "enhanced": "cand08_enhanced.png",
+        "print": "cand08_print.png",
+        "mask": "cand08_mask.png"
+      }
+    },
+    {
+      "id": 9,
+      "centre": [
+        -14.945,
+        35.042,
+        -9.724
+      ],
+      "normal": [
+        -0.1231,
+        -0.0305,
+        -0.9919
+      ],
+      "score": 0.2223,
+      "mean_score": 0.2223,
+      "n_patches": 1,
+      "area_mm2": 4.0,
+      "ridge_period_mm": 0.5411,
+      "straightness": 0.443,
+      "measurements": {
+        "ridge_frequency_per_mm": 1.7026,
+        "mean_ridge_breadth_mm": 0.5873,
+        "ridge_count_per_5mm": 8.51,
+        "ridge_amplitude_um_rms": 4.07,
+        "local_coherence": 0.511,
+        "straightness": 0.61,
+        "area_mm2": 53.9,
+        "isolated": true
+      },
+      "files": {
+        "relief": "cand09_relief.png",
+        "msii": "cand09_msii.png",
+        "enhanced": "cand09_enhanced.png",
+        "print": "cand09_print.png",
+        "mask": "cand09_mask.png"
+      }
+    },
+    {
+      "id": 10,
+      "centre": [
+        -16.499,
+        1.953,
+        -2.123
+      ],
+      "normal": [
+        -0.0861,
+        -0.936,
+        -0.3412
+      ],
+      "score": 0.207,
+      "mean_score": 0.207,
+      "n_patches": 1,
+      "area_mm2": 4.0,
+      "ridge_period_mm": 0.5261,
+      "straightness": 0.612,
+      "measurements": {
+        "ridge_frequency_per_mm": 1.7049,
+        "mean_ridge_breadth_mm": 0.5865,
+        "ridge_count_per_5mm": 8.52,
+        "ridge_amplitude_um_rms": 5.63,
+        "local_coherence": 0.426,
+        "straightness": 0.745,
+        "area_mm2": 53.5,
+        "isolated": true
+      },
+      "files": {
+        "relief": "cand10_relief.png",
+        "msii": "cand10_msii.png",
+        "enhanced": "cand10_enhanced.png",
+        "print": "cand10_print.png",
+        "mask": "cand10_mask.png"
+      }
+    }
+  ]
+}

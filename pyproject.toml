@@ -12,12 +12,16 @@ dependencies = ["numpy>=1.22", "scipy>=1.9", "plyfile>=0.8", "pillow>=9"]
 
 [project.optional-dependencies]
 test = ["pytest"]
+review = ["flask>=2"]
 
 [project.scripts]
 mesoprint = "mesoprint.cli:main"
 
 [tool.setuptools]
 packages = ["mesoprint"]
+
+[tool.setuptools.package-data]
+mesoprint = ["review.html"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

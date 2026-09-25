@@ -1,0 +1,145 @@
+{
+  "candidates": {
+    "1": {
+      "verdict": "print",
+      "reason": "",
+      "note": "",
+      "reviewer": "Luis",
+      "time": "2026-09-25 12:55",
+      "centre": [
+        -23.226,
+        60.969,
+        1.816
+      ],
+      "params": {
+        "radius_mm": 5.0,
+        "mask_level": 0.45
+      },
+      "measurements": {
+        "mean_ridge_breadth_mm": 0.649,
+        "ridge_count_per_5mm": 7.7,
+        "ridge_amplitude_um_rms": 8.6,
+        "straightness": 0.79,
+        "area_mm2": 41.2,
+        "isolated": true
+      },
+      "manual": {
+        "length_mm": 14.539,
+        "lines": [
+          {
+            "drawn_mm": 7.807,
+            "kind": "ridge",
+            "length_mm": 7.807,
+            "n_ridges": 12,
+            "peaks": [
+              0,
+              0.0619,
+              0.1466,
+              0.2215,
+              0.2961,
+              0.3712,
+              0.4463,
+              0.5417,
+              0.6242,
+              0.7166,
+              0.8191,
+              0.9118,
+              1
+            ],
+            "x0": 196.04454656656893,
+            "x1": 305.5283382434722,
+            "y0": 60.54464304692814,
+            "y1": 347.741255996486
+          },
+          {
+            "drawn_mm": 6.732,
+            "kind": "ridge",
+            "length_mm": 6.732,
+            "n_ridges": 12,
+            "peaks": [
+              0,
+              0.0792,
+              0.1472,
+              0.2226,
+              0.3094,
+              0.366,
+              0.4456,
+              0.5509,
+              0.6227,
+              0.7276,
+              0.8111,
+              0.9072,
+              1
+            ],
+            "x0": 146.85617639288773,
+            "x1": 247.61299916800886,
+            "y0": 95.45251865405672,
+            "y1": 340.6010087132097
+          }
+        ],
+        "mean_ridge_breadth_mm": 0.606,
+        "n_lines": 2,
+        "n_ridges": 24,
+        "rulers_mm": []
+      },
+      "strokes": [],
+      "skeleton": {
+        "ridge_length_mm": 60.9,
+        "guided": false,
+        "n_strokes": 0,
+        "n_minutiae": 4,
+        "file": "cand01_skeleton.json"
+      },
+      "files": [
+        "cand01_mask.png",
+        "cand01_print.png",
+        "cand01_msii.png",
+        "cand01_maskonly.png"
+      ]
+    }
+  },
+  "added": [
+    {
+      "id": 101,
+      "centre": [
+        -22.296,
+        61.843,
+        5.25
+      ],
+      "normal": [
+        -0.8653,
+        -0.0166,
+        0.5009
+      ],
+      "score": null,
+      "n_patches": 0,
+      "added": true
+    }
+  ],
+  "moved": {
+    "1": {
+      "centre": [
+        -23.226,
+        60.969,
+        1.816
+      ],
+      "normal": [
+        -0.9725,
+        0.0301,
+        0.231
+      ]
+    },
+    "101": {
+      "centre": [
+        -23.588,
+        60.42,
+        0.056
+      ],
+      "normal": [
+        -0.9974,
+        0.0408,
+        0.0601
+      ]
+    }
+  }
+}

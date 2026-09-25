@@ -39,10 +39,11 @@ def test_scanner_stripes_rank_below_fingerprints(run):
             if _dist(c.centre, ref) < r:
                 rank.setdefault(key, i)
     assert "stripes" not in rank or rank["stripes"] > max(rank["whorl"], rank["arch"])
-    # the body of the stripe patch (parallel ridges) is suppressed
-    core = [p for p in det.patches if _dist(p.centre, art["centre"]) < 2.5 and p.features
-            and p.features.straightness > 0.9]
-    assert core and max(p.score for p in core) < 0.1
+    # the body of the stripe patch (perfectly parallel ridges) is held down by the
+    # straightness penalty to at most the candidate threshold, prints reach ~1
+    core = [p for p in det.patches if _dist(p.centre, art["centre"]) < 2.5 and p.periodic_straightness > 0.95]
+    assert core and max(p.score for p in core) <= det.params.threshold + 1e-6
+    assert max(c.score for c in det.candidates[:2]) > 0.8
 
 
 def test_wedges_and_clay_score_low(run):
